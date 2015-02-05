@@ -1,0 +1,49 @@
+[core]
+	editor = vim
+	autocrlf = input
+	excludesfile = ~/.gitignore
+[filter "media"]
+	clean = git-media-clean %f
+	smudge = git-media-smudge %f
+[user]
+	name = Alexey Plutalov
+	email = demiazz.py@gmail.com
+[color]
+	ui = true
+[alias]
+	st = status
+	ci = commit
+	br = branch
+	co = checkout
+[push]
+	default = simple
+[http]
+	proxy = 
+[filter "media"]
+	required = true
+	clean = git media clean %f
+	smudge = git media smudge %f
+	clean = git media clean %f
+	smudge = git media smudge %f
+	clean = git media clean %f
+	smudge = git media smudge %f
+	clean = git media clean %f
+	smudge = git media smudge %f
+	clean = git media clean %f
+	smudge = git media smudge %f
+	clean = git media clean %f
+	smudge = git media smudge %f
+	clean = git media clean %f
+	smudge = git media smudge %f
+	clean = git media clean %f
+	smudge = git media smudge %f
+	clean = git media clean %f
+	smudge = git media smudge %f
+	clean = git media clean %f
+	smudge = git media smudge %f
+	clean = git media clean %f
+	smudge = git media smudge %f
+[filter "hawser"]
+	clean = git hawser clean %f
+	smudge = git hawser smudge %f
+	required = true

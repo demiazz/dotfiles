@@ -1,0 +1,15 @@
+---
+- name: Download ruby-build distribution
+  git:
+    repo: https://github.com/sstephenson/ruby-build.git
+    version: "v{{ ruby_build_version }}"
+    dest: "/tmp/ruby-build-v{{ ruby_build_version }}"
+  tags: ruby-build
+
+- name: Install ruby-build
+  command: "/tmp/ruby-build-v{{ ruby_build_version }}/install.sh"
+  tags: ruby-build
+
+- name: Removes downloaded ruby-build distribution
+  command: "rm -rf /tmp/ruby-build-v{{ ruby_build_version }}"
+  tags: ruby-build

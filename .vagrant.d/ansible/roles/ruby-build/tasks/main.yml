@@ -1,0 +1,33 @@
+---
+- name: Install build essential
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - autoconf
+    - bison
+    - build-essential
+    - libssl-dev
+    - libyaml-dev
+    - libreadline6-dev
+    - zlib1g-dev
+    - libncurses5-dev
+    - libffi-dev
+    - libgdbm3
+    - libgdbm-dev
+
+- name: Check for ruby-build runtime
+  stat:
+    path: /usr/local/bin/ruby-build
+  register: ruby_build_runtime
+  tags: ruby-build
+
+- name: Check for ruby-build version
+  command: ruby-build --version
+  register: current_ruby_build_version
+  when: ruby_build_runtime.stat.exists
+  tags: ruby-build
+
+- include: install.yml
+  when: not ruby_build_runtime.stat.exists or current_ruby_build_version.stdout != "ruby-build {{ ruby_build_version }}"
+  tags: ruby-build

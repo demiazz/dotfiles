@@ -1,0 +1,43 @@
+---
+- name: Installs the package 'zsh'
+  apt:
+    name: zsh
+    state: latest
+  tags: zsh
+
+- name: Installs the package 'zsh-doc'
+  apt:
+    name: zsh
+    state: latest
+  tags: zsh
+
+- name: Sources /etc/profile to all zshrc
+  lineinfile:
+    dest: "/etc/zsh/zprofile"
+    line: "source /etc/profile"
+    state: present
+  tags: zsh
+
+- name: Set 'zsh' as default shell for user
+  user:
+    name: "{{ user }}"
+    shell: /usr/bin/zsh
+  tags: zsh
+
+- name: Checks existing .zshrc
+  sudo: yes
+  sudo_user: "{{ user }}"
+  stat:
+    path: ~/.zshrc
+  register: zshrc
+  tags: zsh
+
+- name: Sources $HOME/.profile to $HOME/.zshrc
+  sudo: yes
+  sudo_user: "{{ user }}"
+  lineinfile:
+    dest: ~/.zshrc
+    insertbefore: BOF
+    line: source $HOME/.profile
+  when: zshrc.stat.exists
+  tags: zsh

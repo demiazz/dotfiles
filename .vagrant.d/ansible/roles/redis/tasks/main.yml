@@ -1,0 +1,18 @@
+---
+- name: Installs the package 'redis-server'
+  apt:
+    name: redis-server
+    state: latest
+  tags: redis
+
+- name: Installs the package 'redis-tools'
+  apt:
+    name: redis-tools
+    state: latest
+  tags: redis
+
+- name: Ensure 'redis-server' is running
+  service:
+    name: redis-server
+    state: started
+  tags: redis

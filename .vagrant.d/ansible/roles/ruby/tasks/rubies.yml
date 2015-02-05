@@ -1,0 +1,15 @@
+---
+- name: Install system ruby
+  apt:
+    name: ruby
+    state: present
+  when: item.version == "system"
+  with_items: ruby_versions
+  tags: ruby
+
+- name: Install user rubies
+  sudo: yes
+  sudo_user: "{{ user }}"
+  shell: if ! [ -d ~/.rubies/{{ item.dir }} ]; then ruby-build {{ item.version }} ~/.rubies/{{ item.dir }}; fi
+  with_items: ruby_versions | versions_for_ruby_build
+  tags: ruby

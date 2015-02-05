@@ -1,0 +1,57 @@
+---
+- name: Removes the package 'golang' if installed
+  apt:
+    name: golang
+    state: absent
+  tags: golang
+
+- name: Registers the current Go version (if any)
+  command: /usr/local/go/bin/go version
+  ignore_errors: yes
+  register: current_go_version
+  tags: golang
+
+- name: Removes installed Go distribution
+  command: rm -rf /usr/local/go
+  when: current_go_version|failed or current_go_version.stdout != golang_version
+  tags: golang
+
+- name: Downloads Go distribution
+  get_url:
+    url: "https://golang.org/dl/go{{ golang_version }}.{{ golang_os }}-{{ golang_arch }}.tar.gz"
+    dest: "/usr/local/src/go{{ golang_version }}.{{ golang_os }}-{{ golang_arch }}.tar.gz"
+    validate_certs: true
+  when: current_go_version|failed or current_go_version.stdout != golang_version
+  tags: golang
+
+- name: Extracts Go distribution
+  command: tar -C /usr/local -xzf /usr/local/src/go{{ golang_version }}.{{ golang_os }}-{{ golang_arch }}.tar.gz creates=/usr/local/bin/go
+  when: current_go_version|failed or current_go_version.stdout != golang_version
+  tags: golang
+
+- name: Adds the Go bin directory to the PATH environment variable for all users
+  copy:
+    src: go-bin.sh
+    dest: /etc/profile.d
+  tags: golang
+
+- name: Sets GOPATH for all users
+  copy:
+    src: go-path.sh
+    dest: /etc/profile.d
+  tags: golang
+
+- name: Installs Go SCM
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - git
+    - mercurial
+    - bzr
+  tags: golang
+
+- name: Installs Go packages
+  command: sudo -iu {{ user }} go get {{ item }}
+  with_items: golang_packages
+  tags: golang

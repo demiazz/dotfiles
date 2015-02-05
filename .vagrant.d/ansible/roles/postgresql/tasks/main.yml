@@ -1,0 +1,18 @@
+---
+- include: install.yml
+  tags: postgresql
+
+- include: extensions.yml
+  tags: postgresql
+
+- include: configure.yml
+  tags: postgresql
+
+- include: users.yml
+  tags: postgresql
+
+- include: databases.yml
+  tags: postgresql
+
+- include: users_privileges.yml
+  tags: postgresql

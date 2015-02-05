@@ -1,0 +1,6 @@
+---
+sudoers: []
+sudoers_nopasswd: true
+sudoers_users:
+  - ALL
+sudoers_remove: false

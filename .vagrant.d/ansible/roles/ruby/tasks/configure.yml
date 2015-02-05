@@ -1,0 +1,28 @@
+---
+- name: Configure default ruby version
+  template:
+    src: ruby-version.j2
+    dest: ~{{ user }}/.ruby-version
+    owner: "{{ user }}"
+    mode: 0644
+
+- name: Configure rubygems
+  template:
+    src: gemrc.j2
+    dest: ~{{ user }}/.gemrc
+    owner: "{{ user }}"
+    mode: 0644
+
+- name: Create .bundle directory
+  file:
+    path: ~{{ user }}/.bundle
+    state: directory
+    owner: "{{ user }}"
+
+- name: Configure bundler
+  template:
+    src: bundler.j2
+    dest: ~{{ user }}/.bundle/config
+    owner: "{{ user }}"
+    mode: 0644
+  when: ansible_processor_vcpus > 1

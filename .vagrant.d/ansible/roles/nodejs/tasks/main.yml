@@ -1,0 +1,10 @@
+---
+- name: Install the package 'nodejs'
+  apt:
+    name: nodejs
+    state: present
+
+- name: Install the package 'npm'
+  apt:
+    name: nodejs
+    state: present

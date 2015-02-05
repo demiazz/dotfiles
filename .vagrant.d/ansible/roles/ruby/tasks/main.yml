@@ -1,0 +1,4 @@
+---
+- include: rubies.yml
+- include: configure.yml
+- include: gems.yml

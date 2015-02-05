@@ -1,0 +1,18 @@
+---
+- name: Install gems for system ruby
+  command: gem install {{ item.1.name }} --version {{ item.1.version | default("''") }}
+  when: item.0.version == "system"
+  with_subelements:
+    - ruby_versions
+    - gems
+  tags: ruby
+
+- name: Install gems for user rubies
+  sudo: yes
+  sudo_user: "{{ user }}"
+  command: /usr/local/bin/chruby-exec {{ item.0.version | normalize_ruby_version }} -- gem install {{ item.1.name }} --version {{ item.1.version | default("'>= 0'") }}
+  when: item.0.version != "system"
+  with_subelements:
+    - ruby_versions
+    - gems
+  tags: ruby

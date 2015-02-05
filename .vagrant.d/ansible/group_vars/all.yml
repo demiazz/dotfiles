@@ -1,0 +1,29 @@
+---
+locale_names:
+  - ru_RU.UTF-8
+
+git_config:
+  user:
+    name: Alexey Plutalov
+    email: demiazz.py@gmail.com
+  core:
+    editor: vim
+    autocrlf: input
+    excludefile: ~/.gitignore
+  'filter "media"':
+    clean: git-media-clean %f
+    smudge: git-media-smudge %f
+  color:
+    ui: true
+  alias:
+    st: status
+    ci: commit
+    br: branch
+    co: checkout
+  push:
+    default: simple
+
+git_ignore:
+  - .DS_Store
+
+postgresql_locale: ru_RU.UTF-8

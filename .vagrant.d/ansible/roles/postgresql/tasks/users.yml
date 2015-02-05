@@ -1,0 +1,17 @@
+---
+- name: Ensures PostgreSQL is running
+  service:
+    name: postgresql
+    state: started
+
+- name: Makes sure the PostgreSQL users are present
+  sudo: yes
+  sudo_user: "{{ postgresql_admin_user }}"
+  postgresql_user:
+    name: "{{ item.name }}"
+    password: "{{ item.pass | default('pass') }}"
+    port: "{{ postgresql_port }}"
+    state: present
+    login_user: "{{ postgresql_admin_user }}"
+  with_items: postgresql_users
+  when: postgresql_users | length > 0

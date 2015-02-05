@@ -1,0 +1,43 @@
+---
+- name: Check for chruby runtime
+  stat:
+    path: /usr/local/bin/chruby
+  register: chruby_runtime
+  tags: chruby
+
+- name: Check for chruby tarball
+  stat:
+    path: /tmp/chruby-{{ chruby_version }}.tar.gz
+  when: not chruby_runtime.stat.exists
+  register: chruby_tarball
+  tags: chruby
+
+- name: Download chruby distribution
+  get_url:
+    url: "http://github.com/postmodern/chruby/archive/v{{ chruby_version }}.tar.gz"
+    dest: "/tmp/chruby-{{ chruby_version }}.tar.gz"
+  when: not chruby_runtime.stat.exists and not chruby_tarball.stat.exists
+  register: chruby_downloaded
+  tags: chruby
+
+- name: Unpack chruby distribution
+  command: tar xf "/tmp/chruby-{{ chruby_version }}.tar.gz" chdir="/tmp"
+  when: chruby_downloaded | changed
+  register: chruby_untarred
+  tags: chruby
+
+- name: Install chruby
+  command: make install chdir="/tmp/chruby-{{ chruby_version }}"
+  when: chruby_untarred | changed
+  tags: chruby
+
+- name: Set chruby autoload for all users
+  copy:
+    src: chruby.sh
+    dest: /etc/profile.d/chruby.sh
+  tags: chruby
+
+- name: Remove downloaded chruby distribution
+  command: "rm -rf /tmp/chruby-{{ chruby_version }}.tar.gz"
+  when: chruby_downloaded
+  tags: chruby

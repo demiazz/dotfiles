@@ -1,0 +1,5 @@
+# {{ ansible_managed }}
+
+{% for pattern in git_ignore %}
+{{ pattern }}
+{% endfor %}

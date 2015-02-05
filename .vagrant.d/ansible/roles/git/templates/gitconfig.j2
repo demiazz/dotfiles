@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+
+{% for section, section_entries in git_config.iteritems() %}
+[{{section}}]
+{% for key, value in section_entries.iteritems() %}
+  {{ key }} = {{ value }}
+{% endfor %}
+{% endfor %}

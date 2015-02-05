@@ -1,0 +1,23 @@
+---
+- name: Make sure the packages are installed
+  apt:
+    pkg: "{{ item }}"
+    state: present
+  with_items:
+    - autoconf
+    - binutils-doc
+    - bison
+    - build-essential
+    - flex
+    - gettext
+    - ncurses-dev
+    - perl
+    - libperl-dev
+
+- name: Get the CPAN script
+  get_url:
+    url: https://raw.githubusercontent.com/miyagawa/cpanminus/1.7102/cpanm
+    dest: /usr/local/bin/cpanm
+    owner: root
+    group: root
+    mode: 0755

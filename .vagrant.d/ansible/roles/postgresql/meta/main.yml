@@ -1,0 +1,9 @@
+---
+allow_duplicates: yes
+dependencies:
+  - role: sudoers
+    sudoers_filename: postgresql
+    sudoers:
+      - name: "{{ user }}"
+        users:
+          - "{{ postgresql_admin_user }}"

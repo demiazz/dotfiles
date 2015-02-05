@@ -1,0 +1,40 @@
+---
+- name: Installs the package 'git'
+  apt:
+    name: git
+    state: latest
+  tags: git
+
+- name: Backing up existing ~/.gitconfig
+  sudo: yes
+  sudo_user: "{{ user }}"
+  shell: if [ -f ~/.gitconfig ]; then mv ~/.gitconfig ~/.gitconfig.orig; fi
+  when: git_config is defined
+  tags: git
+
+- name: Creating new ~/.gitconfig
+  sudo: yes
+  sudo_user: "{{ user }}"
+  template:
+    src: gitconfig.j2
+    dest: "~/.gitconfig"
+    mode: 0644
+  when: git_config is defined
+  tags: git
+
+- name: Backing up existing ~/.gitignore
+  sudo: yes
+  sudo_user: "{{ user }}"
+  shell: if [ -f ~/.gitignore ]; then mv ~/.gitignore ~/.gitignore.orig; fi
+  when: git_ignore is defined
+  tags: git
+
+- name: Creating new ~/.gitignore
+  sudo: yes
+  sudo_user: "{{ user }}"
+  template:
+    src: gitignore.j2
+    dest: "~/.gitignore"
+    mode: 0644
+  when: git_ignore is defined
+  tags: git

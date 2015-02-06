@@ -1,0 +1,70 @@
+---
+- name: Install dependenies
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - mercurial
+    - darcs
+    - aspcud
+    - m4
+
+- name: Download installation script
+  get_url:
+    url: https://raw.githubusercontent.com/ocaml/opam/master/shell/opam_installer.sh
+    dest: /tmp/opam_installer.sh
+    validate_certs: yes
+  tags:
+    - ocaml
+
+- name: Install OPAM
+  command: sh /tmp/opam_installer.sh /usr/local/bin
+  tags:
+    - ocaml
+
+- name: Install Ocaml
+  sudo: yes
+  sudo_user: "{{ user }}"
+  command: "opam init -a --comp={{ ocaml_version }}"
+  tags:
+    - ocaml
+
+- name: Install core library
+  sudo: yes
+  sudo_user: "{{ user }}"
+  shell: eval `opam config env` && opam install -y core
+  tags:
+    - ocaml
+
+- name: Install utop
+  sudo: yes
+  sudo_user: "{{ user }}"
+  shell: eval `opam config env` && opam install -y utop
+  tags:
+    - ocaml
+
+- name: Configure utop
+  sudo: yes
+  sudo_user: "{{ user }}"
+  lineinfile:
+    dest: "~{{ user }}/.ocamlinit"
+    insertafter: EOF
+    line: "{{ item }}"
+    state: present
+    create: yes
+  with_items:
+    - '#use "topfind";;'
+    - '#thread;;'
+    - '#camlp4o;;'
+    - '#require "core.top";;'
+    - '#require "core.syntax";;'
+  tags:
+    - ocaml
+
+- name: Install ocaml packages
+  sudo: yes
+  sudo_user: "{{ user }}"
+  shell: "eval `opam config env` && opam install -y {{ item }}"
+  with_items: ocaml_packages
+  tags:
+    - ocaml

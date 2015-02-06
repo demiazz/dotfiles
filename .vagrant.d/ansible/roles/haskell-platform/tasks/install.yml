@@ -1,0 +1,43 @@
+---
+- name: Install dependencies
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - build-essential
+    - libgmp-dev
+    - libgmp3-dev
+  tags:
+    - haskell
+    - haskell-platform
+
+- name: Download Haskell Platform distribution
+  get_url:
+    url: "{{ haskell_platform_url }}"
+    sha256sum: "{{ haskell_platform_sha256sum }}"
+    dest: /tmp/haskell-platform.tar.gz
+  tags:
+    - haskell
+    - haskell-platform
+
+- name: Unpack Haskell Platform distribution
+  command: tar xvf /tmp/haskell-platform.tar.gz
+  args:
+    chdir: /
+  tags:
+    - haskell
+    - haskell-platform
+
+- name: Remove downloaded Haskell Platform distribution
+  command: rm /tmp/haskell-platform.tar.gz
+  tags:
+    - haskell
+    - haskell-platform
+
+- name: Activate Haskell Platform distribution
+  command: "/usr/local/haskell/ghc-{{ haskell_platform_ghc_version }}-x86_64/bin/activate-hs"
+  args:
+    chdir: /
+  tags:
+    - haskell
+    - haskell-platform

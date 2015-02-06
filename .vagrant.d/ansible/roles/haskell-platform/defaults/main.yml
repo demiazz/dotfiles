@@ -1,0 +1,4 @@
+---
+haskell_platform_ghc_version: 7.8.3
+haskell_platform_url: https://www.haskell.org/platform/download/2014.2.0.0/haskell-platform-2014.2.0.0-unknown-linux-x86_64.tar.gz
+haskell_platform_sha256sum: 0da6879ae657481849e7ec4e5d3c4c035e090824167f97434b48af297ec17cf9

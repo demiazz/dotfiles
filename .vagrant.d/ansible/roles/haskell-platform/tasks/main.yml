@@ -1,0 +1,11 @@
+---
+- name: Check installed Haskell Platform distribution
+  stat:
+    path: "/usr/local/haskell/ghc-{{ haskell_platform_ghc_version }}-x86_64/bin/ghc"
+  register: installed_haskell_platform
+  tags:
+    - haskell
+    - haskell-platform
+
+- include: install.yml
+  when: not installed_haskell_platform.stat.exists

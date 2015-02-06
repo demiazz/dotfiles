@@ -1,0 +1,4 @@
+---
+- include: mc.yml
+- include: htop.yml
+- include: neovim.yml

@@ -1,0 +1,43 @@
+---
+- name: Add neovim repository
+  apt_repository:
+    repo: ppa:neovim-ppa/unstable
+  tags:
+    - workspace
+
+- name: Install neovim
+  apt:
+    name: neovim
+    state: latest
+  tags:
+    - workspace
+
+- name: Install neovim as alternative for vi
+  command: update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60
+  tags:
+    - workspace
+
+- name: Configure vi alternative
+  command: update-alternatives --auto vi
+  tags:
+    - workspace
+
+- name: Install neovim as alternative for vim
+  command: update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 60
+  tags:
+    - workspace
+
+- name: Configure vim alternative
+  command: update-alternatives --auto vim
+  tags:
+    - workspace
+
+- name: Install neovim as alternative for editor
+  command: update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
+  tags:
+    - workspace
+
+- name: Configure editor alternative
+  command: update-alternatives --auto editor
+  tags:
+    - workspace

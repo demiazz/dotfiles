@@ -1,0 +1,22 @@
+---
+- name: Install 10gen repository key
+  apt_key:
+    keyserver: hkp://keyserver.ubuntu.com:80
+    id: 7F0CEB10
+  tags:
+    - mongodb
+
+- name: Add 10gen repository
+  apt_repository:
+    repo: deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen
+    state: present
+  tags:
+    - mongodb
+
+- name: Install MongoDB
+  apt:
+    name: mongodb-org
+    update_cache: yes
+    state: latest
+  tags:
+    - mongodb

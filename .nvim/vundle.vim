@@ -7,6 +7,10 @@ Plugin 'gmarik/Vundle.vim'
 
 " Interface
 
+  " Solarized color scheme
+  Plugin 'altercation/vim-colors-solarized'
+  Plugin 'gorodinskiy/vim-coloresque'
+
   " A tree explorer plugin
   Plugin 'scrooloose/nerdtree'
   Plugin 'jistr/vim-nerdtree-tabs'

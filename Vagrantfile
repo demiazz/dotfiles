@@ -32,6 +32,10 @@ class InstanceFactory
       configure_ssh(config)
 
       instances.each do |i|
+        i[:domain] ||= "#{ i[:host] }.dev"
+        i[:size]   ||= :middle
+        i[:sync]   ||= []
+
         configure_instance(config, i[:host], i[:domain], i[:size], i[:sync])
       end
 
@@ -44,11 +48,8 @@ class InstanceFactory
     ip          = "192.168.100.#{ @ip_index }"
     @ip_index  += 1
 
-    @ips ||= {}
-    @ips[host] = {
-      domain: domain || "#{ host }.dev",
-      ip:     ip
-    }
+    @ips       ||= {}
+    @ips[host]   = { domain: domain, ip: ip }
 
     ip
   end

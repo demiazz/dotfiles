@@ -1,0 +1,8 @@
+---
+- name: Check Meteor.js installation
+  stat:
+    path: /usr/local/bin/meteor
+  register: meteor_installation
+
+- include: install.yml
+  when: not meteor_installation.stat.exists

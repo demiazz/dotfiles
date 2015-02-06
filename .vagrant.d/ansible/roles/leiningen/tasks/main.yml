@@ -1,0 +1,19 @@
+---
+- name: Check lein installed
+  stat:
+    path: /usr/local/bin/lein
+  register: leiningen_installation
+  tags:
+    - clojure
+    - leiningen
+
+- include: install.yml
+  when: not leiningen_installation.stat.exists
+
+- name: Install leiningen
+  sudo: yes
+  sudo_user: "{{ user }}"
+  command: lein
+  tags:
+    - clojure
+    - leiningen

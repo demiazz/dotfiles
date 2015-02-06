@@ -1,0 +1,44 @@
+---
+- name: Install python-pycurl
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - python-pycurl
+    - python-apt
+  tags:
+    - erlang-solutions
+    - elixir
+
+- name: Adds Erlang Solutions repository
+  apt_repository:
+    repo: "deb http://packages.erlang-solutions.com/ubuntu {{ ansible_distribution_release }} contrib"
+    validate_certs: yes
+    state: present
+  tags:
+    - erlang-solutions
+    - elixir
+
+- name: Adds Erlang Solutions repository key
+  apt_key:
+    url: http://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc
+    validate_certs: yes
+    state: present
+  tags:
+    - erlang-solutions
+    - elixir
+
+- name: Update apt cache if needed
+  apt:
+    update_cache: yes
+  tags:
+    - erlang-solutions
+    - elixir
+
+- name: Install Elixir
+  apt:
+    name: elixir
+    state: latest
+  tags:
+    - erlang-solutions
+    - elixir

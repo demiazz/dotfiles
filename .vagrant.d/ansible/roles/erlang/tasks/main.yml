@@ -28,16 +28,10 @@
     - erlang-solutions
     - erlang
 
-- name: Update apt cache if needed
-  apt:
-    update_cache: yes
-  tags:
-    - erlang-solutions
-    - erlang
-
 - name: Install Erlang
   apt:
     name: esl-erlang
+    update_cache: yes
     state: latest
   tags:
     - erlang-solutions

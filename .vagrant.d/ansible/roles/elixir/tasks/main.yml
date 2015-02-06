@@ -28,16 +28,10 @@
     - erlang-solutions
     - elixir
 
-- name: Update apt cache if needed
-  apt:
-    update_cache: yes
-  tags:
-    - erlang-solutions
-    - elixir
-
 - name: Install Elixir
   apt:
     name: elixir
+    update_cache: yes
     state: latest
   tags:
     - erlang-solutions

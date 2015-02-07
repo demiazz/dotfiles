@@ -15,5 +15,10 @@ Plugin 'gmarik/Vundle.vim'
   Plugin 'scrooloose/nerdtree'
   Plugin 'jistr/vim-nerdtree-tabs'
 
+" Styles
+
+  " Stylus
+  Plugin 'wavded/vim-stylus'
+
 call vundle#end()
 filetype plugin indent on

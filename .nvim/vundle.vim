@@ -15,7 +15,21 @@ Plugin 'gmarik/Vundle.vim'
   Plugin 'scrooloose/nerdtree'
   Plugin 'jistr/vim-nerdtree-tabs'
 
+" Templating
+
+  " Slim
+  Plugin 'slim-template/vim-slim'
+
+  " Haml
+  Plugin 'tpope/vim-haml'
+
 " Styles
+
+  " SASS
+  " Plugin 'tpope/vim-haml'
+
+  " SCSS
+  " Plugin 'tpope/vim-haml'
 
   " Stylus
   Plugin 'wavded/vim-stylus'

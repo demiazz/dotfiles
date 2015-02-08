@@ -14,7 +14,12 @@ Plugin 'gmarik/Vundle.vim'
   Plugin 'scrooloose/nerdtree'
   Plugin 'jistr/vim-nerdtree-tabs'
 
-" Templating
+" HTML/Templating 
+
+  " HTML
+  Plugin 'othree/html5.vim'
+  Plugin 'hokaccha/vim-html5validator'
+  Plugin 'gregsexton/MatchTag'
 
   " Slim
   Plugin 'slim-template/vim-slim'

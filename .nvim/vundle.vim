@@ -36,6 +36,12 @@ Plugin 'gmarik/Vundle.vim'
 
 " Styles
 
+  " CSS
+  Plugin 'hail2u/vim-css3-syntax'
+  Plugin 'ap/vim-css-color'
+  Plugin 'miripiruni/vim-better-css-indent'
+  Plugin 'gorodinskiy/vim-coloresque'
+
   " SASS
   " Plugin 'tpope/vim-haml'
 

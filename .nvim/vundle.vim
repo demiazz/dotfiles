@@ -27,6 +27,23 @@ Plugin 'gmarik/Vundle.vim'
   " CoffeeScript
   Plugin 'kchmck/vim-coffee-script'
 
+  " JavaScript with React JSX
+  Plugin 'mxw/vim-jsx'
+
+  " CoffeeScript with React JSX
+  Plugin 'mtscout6/vim-cjsx'
+
+  " Erlang
+  Plugin 'jimenezrick/vimerl'
+  Plugin 'edkolev/erlang-motions'
+
+  " Elixir
+  Plugin 'elixir-lang/vim-elixir'
+
+  " Scala
+  Plugin 'derekwyatt/vim-scala'
+  Plugin 'ktvoelker/sbt-vim'
+
 " Frameworks
 
   " Ruby On Rails

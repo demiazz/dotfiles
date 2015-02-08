@@ -14,6 +14,30 @@ Plugin 'gmarik/Vundle.vim'
   Plugin 'scrooloose/nerdtree'
   Plugin 'jistr/vim-nerdtree-tabs'
 
+" Languages
+
+  " Ruby
+  Plugin 'vim-ruby/vim-ruby'
+  Plugin 'tpope/vim-endwise'
+
+  " JavaScript
+  Plugin 'pangloss/vim-javascript'
+  Plugin 'walm/jshint.vim'
+
+  " CoffeeScript
+  Plugin 'kchmck/vim-coffee-script'
+
+" Frameworks
+
+  " Ruby On Rails
+  Plugin 'tpope/vim-rails'
+
+  " node.js/io.js
+  Plugin 'moll/vim-node'
+
+  " jQuery
+  Plugin 'itspriddle/vim-jquery'
+
 " HTML/Templating 
 
   " HTML

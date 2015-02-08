@@ -9,7 +9,6 @@ Plugin 'gmarik/Vundle.vim'
 
   " Solarized color scheme
   Plugin 'altercation/vim-colors-solarized'
-  Plugin 'gorodinskiy/vim-coloresque'
 
   " A tree explorer plugin
   Plugin 'scrooloose/nerdtree'
@@ -22,6 +21,15 @@ Plugin 'gmarik/Vundle.vim'
 
   " Haml
   Plugin 'tpope/vim-haml'
+
+  " Handlebars
+  Plugin 'mustache/vim-mustache-handlebars'
+
+  " Mustache
+  " Plugin 'mustache/vim-mustache-handlebars'
+
+  " Jade
+  Plugin 'digitaltoad/vim-jade'
 
 " Styles
 

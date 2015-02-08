@@ -1,3 +1,7 @@
+" Leader key 
+  
+  let mapleader = ","
+
 " Disable arrow keys
 
   inoremap <Up>    <NOP>

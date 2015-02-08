@@ -9,7 +9,6 @@
   " File format
   set fileformat=unix
 
-
 " Wildmenu
 
   " Enable wildmenu
@@ -115,7 +114,7 @@
 
 " Line numbers
 
-  :set number
+  set number
 
 " Search paths
 
@@ -123,3 +122,29 @@
   " Current directory
   " Downwards in a directory tree
   set path=.,,**
+
+" Tabs
+
+  " Always show tabs
+  set showtabline=2
+
+" Search
+
+  " Incremental search
+  set incsearch
+
+  " Highlight search
+  set hlsearch
+
+  " Ignore case in search
+  set ignorecase
+
+  " Smart search case
+  set smartcase
+
+  set gdefault
+
+" Mapping
+
+  " Map russian cyrillic keys
+  set langmap=ёйцукенгшщзхъфывапролджэячсмитьбюЁЙЦУКЕHГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ;`qwertyuiop[]asdfghjkl\\;'zxcvbnm\\,.~QWERTYUIOP{}ASDFGHJKL:\\"ZXCVBNM<>

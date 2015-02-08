@@ -7,6 +7,9 @@ Plugin 'gmarik/Vundle.vim'
 
 " Interface
 
+  " Status line
+  Plugin 'bling/vim-airline'
+
   " Solarized color scheme
   Plugin 'altercation/vim-colors-solarized'
 

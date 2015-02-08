@@ -31,6 +31,9 @@ Plugin 'gmarik/Vundle.vim'
   " Jade
   Plugin 'digitaltoad/vim-jade'
 
+  " Jinja2
+  Plugin 'Glench/Vim-Jinja2-Syntax'
+
 " Styles
 
   " SASS

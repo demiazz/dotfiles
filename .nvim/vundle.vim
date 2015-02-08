@@ -14,6 +14,16 @@ Plugin 'gmarik/Vundle.vim'
   Plugin 'scrooloose/nerdtree'
   Plugin 'jistr/vim-nerdtree-tabs'
 
+  " Comments
+  Plugin 'scrooloose/nerdcommenter' 
+
+  " Search
+  Plugin 'mileszs/ack.vim'
+  Plugin 'vim-scripts/IndexedSearch'
+  
+  " File open
+  Plugin 'kien/ctrlp.vim'
+
 " Languages
 
   " Ruby

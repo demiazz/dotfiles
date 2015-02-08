@@ -31,6 +31,9 @@ Plugin 'gmarik/Vundle.vim'
   " SCSS
   " Plugin 'tpope/vim-haml'
 
+  " Less
+  Plugin 'groenewege/vim-less'
+
   " Stylus
   Plugin 'wavded/vim-stylus'
 

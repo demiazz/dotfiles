@@ -84,14 +84,6 @@
     au WinLeave * setlocal nocursorline
   augroup END
 
-  " Enable cursorcolumn only for active window
-  augroup CursorColumn
-    au!
-    au VimEnter,WinEnter,BufWinEnter * setlocal cursorcolumn
-    au WinLeave * setlocal nocursorcolumn
-  augroup END
-
-
 " Colorscheme
 
   " Number of colors

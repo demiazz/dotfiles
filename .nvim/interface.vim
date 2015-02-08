@@ -100,7 +100,7 @@
   " Enable solarized color scheme
   let g:solarized_termcolors=256
   colorscheme solarized
-  set background=dark
+  set background=light
 
   " Enable syntax highlighting
   syntax enable

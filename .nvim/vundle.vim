@@ -48,5 +48,14 @@ Plugin 'gmarik/Vundle.vim'
   " Stylus
   Plugin 'wavded/vim-stylus'
 
+" Data formats
+
+  " JSON
+  Plugin 'elzr/vim-json'
+
+  " YAML
+  Plugin 'ingydotnet/yaml-vim'
+  Plugin 'chase/vim-ansible-yaml'
+
 call vundle#end()
 filetype plugin indent on

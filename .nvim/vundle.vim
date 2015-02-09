@@ -7,6 +7,9 @@ Plugin 'gmarik/Vundle.vim'
 
 " Interface
 
+  " Startup screen
+  Plugin 'mhinz/vim-startify'
+
   " Status line
   Plugin 'bling/vim-airline'
 
@@ -18,14 +21,17 @@ Plugin 'gmarik/Vundle.vim'
   Plugin 'jistr/vim-nerdtree-tabs'
 
   " Comments
-  Plugin 'scrooloose/nerdcommenter' 
+  Plugin 'scrooloose/nerdcommenter'
 
   " Search
   Plugin 'mileszs/ack.vim'
   Plugin 'vim-scripts/IndexedSearch'
-  
+
   " File open
   Plugin 'kien/ctrlp.vim'
+
+  " Trailing whitespaces
+  Plugin 'bronson/vim-trailing-whitespace'
 
 " Languages
 
@@ -68,7 +74,7 @@ Plugin 'gmarik/Vundle.vim'
   " jQuery
   Plugin 'itspriddle/vim-jquery'
 
-" HTML/Templating 
+" HTML/Templating
 
   " HTML
   Plugin 'othree/html5.vim'

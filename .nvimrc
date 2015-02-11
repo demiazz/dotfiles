@@ -89,7 +89,7 @@ call plug#begin('~/.nvim/plugged')
     Plug 'slim-template/vim-slim',           { 'for': 'slim' }
 
     " Haml
-    Plug 'tpope/vim-haml',                   { 'for': 'haml' }
+    Plug 'tpope/vim-haml',                   { 'for': ['haml', 'sass', 'scss'] }
 
     " Handlebars
     Plug 'mustache/vim-mustache-handlebars'

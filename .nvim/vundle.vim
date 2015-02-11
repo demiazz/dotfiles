@@ -31,7 +31,10 @@ Plugin 'gmarik/Vundle.vim'
   Plugin 'kien/ctrlp.vim'
 
   " Trailing whitespaces
-  Plugin 'bronson/vim-trailing-whitespace'
+  Plugin 'rondale-sc/vim-spacejam'
+
+  " Pair parentheses, brackets, quotes, XML tags, and more.
+  Plugin 'tpope/vim-surround'
 
 " Languages
 
@@ -67,6 +70,9 @@ Plugin 'gmarik/Vundle.vim'
 
   " Ruby On Rails
   Plugin 'tpope/vim-rails'
+
+  " RSpec
+  Plugin 'thoughtbot/vim-rspec'
 
   " node.js/io.js
   Plugin 'moll/vim-node'

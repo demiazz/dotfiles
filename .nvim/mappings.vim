@@ -11,7 +11,7 @@
   nmap <C-h> <C-W>h
   nmap <C-j> <C-W>j
   nmap <C-k> <C-W>k
-  nmap <C-k> <C-W>l
+  nmap <C-l> <C-W>l
 
 " Relative windows
 
@@ -48,6 +48,7 @@
   imap <C-k> <C-o>k
   imap <C-l> <C-o>l
 
-" Trailing whitespaces
+" Ctrl + s
 
-  map <Leader>ts :FixWhitespace<CR>
+  map <C-s>  <Esc>:w<CR>
+  imap <C-s> <Esc>:w<CR>

@@ -84,20 +84,6 @@
     au WinLeave * setlocal nocursorline
   augroup END
 
-" Colorscheme
-
-  " Number of colors
-  set t_Co=256
-
-  " Enable solarized color scheme
-  let g:solarized_termcolors=256
-  colorscheme solarized
-  set background=light
-
-  " Enable syntax highlighting
-  syntax enable
-
-
 " Visualbell
 
   " Disable any beeps and flashes

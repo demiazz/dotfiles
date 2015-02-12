@@ -2,34 +2,34 @@ call plug#begin('~/.nvim/plugged')
 
   " Interface
 
-  " Startup screen
-  Plug 'mhinz/vim-startify'
+    " Startup screen
+    Plug 'mhinz/vim-startify'
 
-  " Status line
-  Plug 'itchyny/lightline.vim'
+    " Status line
+    Plug 'itchyny/lightline.vim'
 
-  " Solarized color scheme
-  Plug 'altercation/vim-colors-solarized'
+    " Solarized color scheme
+    Plug 'altercation/vim-colors-solarized'
 
-  " A tree explorer plugin
-  Plug 'scrooloose/nerdtree'
-  Plug 'jistr/vim-nerdtree-tabs'
+    " A tree explorer plugin
+    Plug 'scrooloose/nerdtree'
+    Plug 'jistr/vim-nerdtree-tabs'
 
-  " Comments
-  Plug 'scrooloose/nerdcommenter'
+    " Comments
+    Plug 'scrooloose/nerdcommenter'
 
-  " Search
-  Plug 'mileszs/ack.vim'
-  Plug 'vim-scripts/IndexedSearch'
+    " Search
+    Plug 'mileszs/ack.vim'
+    Plug 'vim-scripts/IndexedSearch'
 
-  " File open
-  Plug 'kien/ctrlp.vim'
+    " File open
+    Plug 'kien/ctrlp.vim'
 
-  " Trailing whitespaces
-  Plug 'rondale-sc/vim-spacejam'
+    " Trailing whitespaces
+    Plug 'rondale-sc/vim-spacejam'
 
-  " Pair parentheses, brackets, quotes, XML tags, and more.
-  Plug 'tpope/vim-surround'
+    " Pair parentheses, brackets, quotes, XML tags, and more.
+    Plug 'tpope/vim-surround'
 
   " Languages
 

@@ -19,11 +19,6 @@
 	co = checkout
 	pom = push origin master
 	b = branch
-	head = !git l -1
-	h = !git head
-	r = !git l -30
-	ra = !git r --all
-	la = !git l --all
 [push]
 	default = simple
 [format]

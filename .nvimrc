@@ -129,8 +129,8 @@ call plug#begin('~/.nvim/plugged')
     Plug 'elzr/vim-json',                    { 'for': 'json' }
 
     " YAML
-    Plug 'ingydotnet/yaml-vim',              { 'for': 'yaml' }
-    Plug 'chase/vim-ansible-yaml',           { 'for': 'yaml' }
+    Plug 'ingydotnet/yaml-vim',              { 'for': ['yaml', 'ansible'] }
+    Plug 'chase/vim-ansible-yaml',           { 'for': 'ansible' }
 
   " User config
 

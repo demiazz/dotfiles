@@ -42,6 +42,9 @@ call plug#begin('~/.nvim/plugged')
 
   " Languages
 
+    " Syntax checking
+    Plug 'scrooloose/syntastic'
+
     " Ruby
     Plug 'vim-ruby/vim-ruby'
     Plug 'tpope/vim-endwise'

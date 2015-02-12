@@ -82,19 +82,9 @@
   tags:
     - workspace
 
-- name: Copy .nvim directory
-  sudo: yes
-  sudo_user: "{{ user }}"
-  command: "cp -r /tmp/dotfiles/.nvim ~"
+- name: Install nvim plug manager dependency
+  apt:
+    name: "curl"
+    state: "latest"
   tags:
     - workspace
-
-# Post configuration
-
-- name: Install Neovim plugins
-  sudo: yes
-  sudo_user: "{{ user }}"
-  command: "nvim +PlugUpdate +qall"
-  tags:
-    - workspace
-

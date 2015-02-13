@@ -19,6 +19,16 @@
 
 # Neovim
 
+- name: Install neovim dependencies
+  apt:
+    name: "{{ item }}"
+    state: "latest"
+  with_items:
+    - python-pip
+    - libpython-dev
+  tags:
+    - workspace
+
 - name: Add neovim repository
   apt_repository:
     repo: "ppa:neovim-ppa/unstable"
@@ -29,6 +39,11 @@
   apt:
     name: "neovim"
     state: "latest"
+  tags:
+    - workspace
+
+- name: Install python-neovim
+  command: pip install neovim
   tags:
     - workspace
 

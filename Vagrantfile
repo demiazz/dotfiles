@@ -1,157 +1,232 @@
-# Instances
+require 'ostruct'
+require 'pathname'
+require 'yaml'
+
+# Box
 #
+class Box
+  attr_reader :name, :username, :key
 
-instances = [
-  {
-    host:   'ebay-social',
-    domain: 'ebay.dev',
-    groups: %w(rails),
-    size:   :middle,
-    sync:   [
-      { name: 'application', from: '~/Code/ebay-social', to: 'ebay-social' }
-    ]
-  }
-]
-
-# Instance factory
-#
-
-class InstanceFactory
-  SIZES    = {
-    small:  { cpus: 1, memory: 1024 },
-    middle: { cpus: 2, memory: 2048 },
-    large:  { cpus: 4, memory: 4096 }
-  }
-  BOX      = 'ubuntu'
-  USERNAME = 'demiazz'
-  KEY      = 'vagrant'
-
-  def initialize(instances)
-    Vagrant.configure(2) do |config|
-      configure_box(config)
-      configure_ssh(config)
-
-      instances.each do |i|
-        i[:domain] ||= "#{ i[:host] }.dev"
-        i[:size]   ||= :middle
-        i[:sync]   ||= []
-
-        configure_instance(config, i[:host], i[:domain], i[:size], i[:sync])
-      end
-
-      configure_provision(config, instances)
-    end
+  def initialize(options)
+    @name     = options['name']
+    @username = options['username']
+    @key      = File.expand_path("~/.ssh/#{ options['key'] }")
   end
+end
 
-  def register_ip(host, domain)
-    @ip_index ||= 10
-    ip          = "192.168.100.#{ @ip_index }"
-    @ip_index  += 1
+# Size
+#
+class Size
+  attr_reader :cpus, :memory, :default
 
-    @ips       ||= {}
-    @ips[host]   = { domain: domain, ip: ip }
+  def initialize(options)
+    @cpus    = options.fetch('cpus', 1)
+    @memory  = options.fetch('memory', 1024)
+    @default = options.fetch('default', false)
+  end
+end
 
-    ip
+# Instance
+#
+class Instance
+  attr_reader :host, :domain, :username, :groups, :sync, :cpus, :memory
+
+  def initialize(options)
+    @host     = options['host']
+    @domain   = options.fetch('domain', "#{ @host }.dev")
+    @username = options['username']
+    @groups   = options.fetch('groups', [])
+    @sync     = options.fetch('sync', []).map { |f| process_sync(f) }
+    @cpus     = options['cpus']
+    @memory   = options['memory']
   end
 
   private
 
-  def configure_instance(vagrant, host, domain, size, folders)
-    ip = register_ip(host, domain)
+  def process_sync(folder)
+    result = { name: folder['name'] }
 
-    vagrant.vm.define host, autostart: false do |config|
-      config.vm.hostname = host
+    result[:src] = if Pathname.new(folder['src']).absolute?
+                     folder['src']
+                   else
+                     File.expand_path(File.join('~', folder['src']))
+                   end
+
+    result[:dest] = if Pathname.new(folder['dest']).absolute?
+                      folder['dest']
+                    else
+                      File.expand_path(
+                        File.join("/home/#{ @username }", folder['dest'])
+                      )
+                    end
+
+    OpenStruct.new(result)
+  end
+end
+
+# Settings
+#
+class Settings
+  attr_reader :box, :instances
+
+  def initialize
+    load_settings
+
+    create_box
+    create_sizes
+    create_instances
+  end
+
+  def size(name)
+    @sizes[name]
+  end
+
+  private
+
+  def load_settings
+    @settings = YAML.load(File.read(File.expand_path('~/.vagrant.yml')))
+  end
+
+  def create_box
+    @box = Box.new(@settings['box'])
+  end
+
+  def create_sizes
+    @sizes = {}
+
+    @settings['sizes'].each do |name, config|
+      @sizes[name] = Size.new(config)
+    end
+  end
+
+  def create_instances
+    @instances = @settings['instances'].map do |instance|
+      size = @sizes[instance['size']]
+
+      Instance.new(
+        instance.merge({
+          'username' => @box.username,
+          'cpus'     => size.cpus,
+          'memory'   => size.memory
+        })
+      )
+    end
+  end
+end
+
+# IPManager
+#
+class IPManager
+  attr_reader :registry
+
+  def initialize
+    @network  = "192.168.100"
+    @node     = 10
+
+    @registry = {}
+  end
+
+  def register_node(host, domain)
+    ip = "#{ @network }.#{ @node }"
+
+    @registry[host] = { 'domain' => domain, 'ip' => ip }
+
+    @node += 1
+
+    ip
+  end
+end
+
+# Vagrant
+#
+Vagrant.configure(2) do |vagrant|
+  settings   = Settings.new
+  ip_manager = IPManager.new
+
+  # Configure box
+  #
+  vagrant.vm.box              = settings.box.name
+  vagrant.vm.box_check_update = false
+
+  # Configure ssh
+  #
+  vagrant.ssh.username         = settings.box.username
+  vagrant.ssh.private_key_path = settings.box.key
+  vagrant.ssh.forward_agent    = true
+
+  # Configure instances
+  #
+  settings.instances.each do |instance|
+    ip = ip_manager.register_node(instance.host, instance.domain)
+
+    vagrant.vm.define instance.host, autostart: true do |config|
+      config.vm.hostname = instance.host
 
       config.vm.network(:private_network, ip: ip)
 
-      folders.each do |sf|
-        from = sf[:from]
-        to   = File.join("/home/#{ USERNAME }", sf[:to])
-
-        config.vm.synced_folder(from, to)
+      instance.sync.each do |folder|
+        config.vm.synced_folder(folder.src, folder.dest)
       end
 
       config.vm.provider :parallels do |provider|
-        provider.cpus               = SIZES[size][:cpus]
-        provider.memory             = SIZES[size][:memory]
+        provider.cpus               = instance.cpus
+        provider.memory             = instance.memory
         provider.update_guest_tools = true
       end
     end
   end
 
-  def configure_box(vagrant)
-    vagrant.vm.box              = BOX
-    vagrant.vm.box_check_update = false
-  end
+  # Provision
+  #
+  vagrant.vm.provision :ansible do |ansible|
+    # Playbook
+    #
+    ansible.playbook = File.expand_path('~/.vagrant.d/ansible/playbook.yml')
 
-  def configure_ssh(vagrant)
-    vagrant.ssh.username         = USERNAME
-    vagrant.ssh.private_key_path = File.join('~/.ssh', KEY)
-    vagrant.ssh.forward_agent    = true
-  end
+    # Sudo
+    #
+    ansible.sudo = true
 
-  def configure_provision(vagrant, instances)
-    registered_ips = @ips
+    # Ansible groups
+    #
+    ansible.groups = {}
 
-    vagrant.vm.provision :ansible do |ansible|
-      # Ansible playbook
-      #
-      ansible.playbook = File.expand_path('~/.vagrant.d/ansible/playbook.yml')
+    settings.instances.each do |instance|
+      instance.groups.each do |group|
+        ansible.groups[group] ||= []
 
-      # Sudo
-      #
-      ansible.sudo = true
-
-      # Ansible groups
-      #
-      ansible.groups = {}
-      instances.each do |instance|
-        instance_groups = instance.fetch(:groups, [])
-
-        instance_groups.each do |group|
-          ansible.groups[group] ||= []
-
-          ansible.groups[group].push(instance[:host])
-        end
+        ansible.groups[group] << instance.host
       end
-
-      # User for working in VM
-      #
-      vars = { user: USERNAME, sync: {} }
-
-      instances.each do |instance|
-        folders = {}
-
-        instance[:sync].each do |folder|
-          name = folder[:name]
-          to   = File.join("/home/#{ USERNAME }", folder[:to])
-
-          folders[name] = to
-        end
-
-        vars[:sync][instance[:host]] = folders
-      end
-
-      # Domains and ips for registration
-      #
-      vars[:ips] = registered_ips
-
-      # Transit vars to ansible
-      #
-      ansible.extra_vars = vars
-
-      # Ask password for sudo
-      #
-      ansible.raw_arguments = ['--ask-sudo-pass']
     end
 
-    def expand_sync_path(path)
-      File.join("/home/#{ USERNAME }", path)
+    # Ansible vars
+    #
+    ansible.extra_vars = {}
+
+    # Ansible user
+    #
+    ansible.extra_vars['user'] = settings.box.username
+
+    # Ansible DNS table
+    #
+    ansible.extra_vars['ips'] = ip_manager.registry
+
+    # Ansible synced folders
+    #
+    ansible.extra_vars['sync'] = {}
+
+    settings.instances.each do |instance|
+      folders = {}
+
+      instance.sync.each do |folder|
+        folders[folder.name] = folder.dest
+      end
+
+      ansible.extra_vars['sync'][instance.host] = folders
     end
+
+    # Ansible command line arguments
+    #
+    ansible.raw_arguments = ['--ask-sudo-pass']
   end
 end
-
-# Create instances
-#
-
-InstanceFactory.new(instances)

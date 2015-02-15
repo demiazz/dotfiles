@@ -37,6 +37,9 @@ call plug#begin('~/.nvim/plugged')
     " Pair parentheses, brackets, quotes, XML tags, and more.
     Plug 'tpope/vim-surround'
 
+    " Indent highlight
+    Plug 'Yggdroot/indentLine'
+
     " Git support
     Plug 'tpope/vim-fugitive'
 

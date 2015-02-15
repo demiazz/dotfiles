@@ -43,6 +43,10 @@ call plug#begin('~/.nvim/plugged')
     " Git support
     Plug 'tpope/vim-fugitive'
 
+    " Snippets
+    Plug 'SirVer/ultisnips'
+    Plug 'honza/vim-snippets'
+
   " Languages
 
     " Syntax checking

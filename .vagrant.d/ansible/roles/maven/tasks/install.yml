@@ -1,0 +1,47 @@
+---
+- name: Check Maven source
+  stat: 
+    path: "/usr/local/src/{{ maven_tarball }}"
+  register: maven_tarball_file
+
+- name: Downloads Maven distribution
+  get_url:
+    url: "{{ maven_mirror }}"
+    dest: "/usr/local/src"
+  when: not maven_tarball_file.stat.exists
+
+- name: Check Maven install directory
+  stat:
+    path: "/usr/local/maven"
+  register: maven_install_dir
+
+- fail:
+    msg: "Maven install path is exists, but it's not a directory"
+  when: maven_install_dir.stat.exists and not maven_install_dir.stat.isdir
+
+- name: Make directory for maven
+  command: "mkdir /usr/local/maven"
+  when: not maven_install_dir.stat.exists
+
+- name: Check existing of installed Maven distribution of needed version
+  stat:
+    path: "/usr/local/maven/{{ maven_version }}"
+  register: maven_installation
+
+- name: Unarchive Maven distribution
+  command: "tar -C /usr/local/maven -xzf /usr/local/src/{{ maven_tarball }}"
+  when: not maven_installation.stat.exists
+
+- name: Rename extracted maven distribution
+  command: "mv /usr/local/maven/apache-maven-{{ maven_version }} /usr/local/maven/{{ maven_version }}"
+  when: not maven_installation.stat.exists
+
+- name: Symlink Maven binaries to bin path
+  file: 
+    src: "/usr/local/maven/{{ maven_version }}/bin/{{ item }}"
+    dest: "/usr/local/bin/{{ item }}"
+    state: "link"
+  with_items:
+    - mvn
+    - mvnDebug
+    - mvnyjp

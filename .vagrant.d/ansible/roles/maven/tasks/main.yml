@@ -1,0 +1,25 @@
+---
+- name: Remove the package 'maven' and 'maven2' if installed
+  apt:
+    name: "{{ item }}"
+    state: "absent"
+  with_items:
+    - maven
+    - maven2
+  tags:
+    - java
+    - maven
+
+- name: Check current Maven version (if any)
+  command: "mvn --version"
+  ignore_errors: yes
+  register: "current_maven_version"
+  tags:
+    - java
+    - maven
+
+- include: install.yml
+  when: (current_maven_version | failed) or (not current_maven_version.stdout | match("Apache Maven {{ maven_version }}.*"))
+  tags:
+    - java
+    - maven

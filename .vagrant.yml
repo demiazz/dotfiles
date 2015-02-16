@@ -1,0 +1,24 @@
+---
+box:
+  name:     "ubuntu"
+  username: "demiazz"
+  key:      "vagrant"
+
+sizes:
+  small:
+    cpus:   1
+    memory: 1024
+  middle:
+    cpus:   2
+    memory: 2048
+  large:
+    cpus:   4
+    memory: 4096
+
+instances:
+  - host: "pb7con"
+    size: "large"
+    sync:
+      - name: "code"
+        src:  "Code"
+        dest: "Code"

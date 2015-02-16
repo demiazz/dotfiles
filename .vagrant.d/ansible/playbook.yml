@@ -1,0 +1,16 @@
+- hosts: all
+  sudo: yes
+
+  roles:
+    - hosts
+    - workspace
+
+- hosts: pb7con
+  sudo: yes
+
+  roles:
+    - maven
+    - leiningen
+    - elixir
+
+- include: playbook.priv.yml

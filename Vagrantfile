@@ -67,6 +67,9 @@ end
 # Settings
 #
 class Settings
+  PUBLIC_SETTINGS  = File.expand_path('~/.vagrant.yml')
+  PRIVATE_SETTINGS = File.expand_path('~/.vagrant.priv.yml')
+
   attr_reader :box, :instances
 
   def initialize
@@ -84,7 +87,34 @@ class Settings
   private
 
   def load_settings
-    @settings = YAML.load(File.read(File.expand_path('~/.vagrant.yml')))
+    pub  = YAML.load(File.read(PUBLIC_SETTINGS))
+    priv = if File.exist?(PRIVATE_SETTINGS)
+             YAML.load(File.read(PRIVATE_SETTINGS))
+           else
+             {}
+           end
+
+    @settings = merge_settings(pub, priv)
+
+    raise @settings.inspect
+  end
+
+  def merge_settings(pub, priv)
+    # Merge box settings
+    #
+    box = {}.merge(pub.fetch('box', {})).merge(priv.fetch('box', {}))
+
+    # Merge sizes settings
+    #
+    sizes = {}.merge(pub.fetch('sizes', {})).merge(priv.fetch('sizes', {}))
+
+    # Merge instances
+    #
+    instances = pub.fetch('instances', []) + priv.fetch('instances', [])
+
+    # Build merge settings
+    #
+    { 'box' => box, 'sizes' => sizes, 'instances' => instances }
   end
 
   def create_box

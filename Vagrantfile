@@ -95,8 +95,6 @@ class Settings
            end
 
     @settings = merge_settings(pub, priv)
-
-    raise @settings.inspect
   end
 
   def merge_settings(pub, priv)

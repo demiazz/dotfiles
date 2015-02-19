@@ -1,26 +1,26 @@
 ---
 - name: Install Meteor.js dependencies
   apt:
-    name: curl
-    state: present
+    name: "curl"
+    state: "present"
   tags:
     - javascript
     - meteor
 
 - name: Download Meteor.js installer
   get_url:
-    url: https://install.meteor.com
-    dest: /tmp/install_meteor.sh
-    validate_certs: yes
+    url: "https://install.meteor.com"
+    dest: "/tmp/install_meteor.sh"
+    validate_certs: "yes"
   tags:
     - javascript
     - meteor
 
 - name: Install Meteor.js
-  command: /bin/sh /tmp/install_meteor.sh
+  command: "/bin/sh /tmp/install_meteor.sh"
   tags:
     - javascript
     - meteor
 
 - name: Remove installation script
-  command: rm /tmp/install_meteor.sh
+  command: "rm /tmp/install_meteor.sh"

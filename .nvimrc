@@ -22,7 +22,7 @@ call plug#begin('~/.nvim/plugged')
     Plug 'jistr/vim-nerdtree-tabs'
 
     " Comments
-    Plug 'scrooloose/nerdcommenter'
+    Plug 'tpope/vim-commentary'
 
     " Search
     Plug 'mileszs/ack.vim'

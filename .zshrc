@@ -81,7 +81,7 @@ alias vs="vagrant global status"
 
 # Configs
 
-alias evim="$EDITOR .nvimrc"
+alias evim="$EDITOR ~/.nvimrc"
 alias evpu="$EDITOR ~/.vagrant.yml"
 alias evpr="$EDITOR ~/.vagrant.priv.yml"
 alias eans="$EDITOR ~/.vagrant.d/ansible"

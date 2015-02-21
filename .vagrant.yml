@@ -22,3 +22,10 @@ instances:
       - name: "code"
         src:  "Code"
         dest: "Code"
+
+  - host: "erl"
+    size: "middle"
+    sync:
+      - name: "code"
+        src:  "Code"
+        dest: "Code"

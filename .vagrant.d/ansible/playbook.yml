@@ -13,4 +13,10 @@
     - leiningen
     - elixir
 
+- hosts: erl
+  sudo: yes
+
+  roles:
+    - rebar
+
 - include: playbook.priv.yml

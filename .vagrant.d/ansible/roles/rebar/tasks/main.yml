@@ -1,0 +1,23 @@
+---
+- name: Check for rebar runtime
+  stat:
+    path: "{{ rebar_bin }}"
+  register: "rebar_runtime"
+  tags: 
+    - erlang
+    - rebar
+
+- name: Check for rebar version
+  command: rebar --version
+  register: "current_rebar_version"
+  when: "rebar_runtime.stat.exists"
+  tags:
+    - erlang
+    - rebar
+
+- include: install.yml
+  when: "not rebar_runtime.stat.exists or not current_rebar_version.stdout | match('rebar {{ rebar_version }}')"
+  tags:
+    - erlang
+    - rebar
+

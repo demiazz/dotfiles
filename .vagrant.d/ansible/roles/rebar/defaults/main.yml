@@ -1,0 +1,4 @@
+---
+rebar_version: "2.5.1"
+rebar_bin: "/usr/local/bin/rebar"
+rebar_download_dir: "/tmp/rebar"

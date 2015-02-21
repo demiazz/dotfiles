@@ -1,0 +1,16 @@
+---
+- name: Download source code
+  git:
+    repo: "https://github.com/rebar/rebar.git"
+    dest: "{{ rebar_download_dir }}"
+    version: "{{ rebar_version }}"
+  register: result
+
+- name: Compile rebar using bootstrap script
+  command: "./bootstrap"
+  args:
+    chdir: "{{ rebar_download_dir }}"
+    creates: "rebar"
+
+- name: Setup rebar script
+  command: "mv {{ rebar_download_dir }}/rebar {{ rebar_bin }}"

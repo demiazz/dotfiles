@@ -6,7 +6,7 @@
   tags:
     - scala
 
-- name: "Clean existing Scala"
+- name: Clean existing Scala
   file:
     path: "{{ scala_lib_path_target }}"
     state: absent

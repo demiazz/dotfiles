@@ -77,7 +77,9 @@ chruby ruby-2.2.0
 alias vu="vagrant up"
 alias vh="vagrant halt"
 alias vd="vagrant destroy"
-alias vs="vagrant global status"
+alias vs="vagrant global-status"
+alias vl="vagrant ssh"
+alias vp="vagrant provision"
 
 # Configs
 

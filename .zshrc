@@ -69,6 +69,11 @@ fi
 
 chruby ruby-2.2.0
 
+# NVM
+
+export NVM_DIR=~/.nvm
+source $(brew --prefix nvm)/nvm.sh
+
 # Aliases
 #
 

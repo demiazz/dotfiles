@@ -122,6 +122,10 @@ call plug#begin('~/.nvim/plugged')
     " Jinja2
     Plug 'Glench/Vim-Jinja2-Syntax',         { 'for': 'jinja' }
 
+    " Markdown
+    Plug 'godlygeek/tabular',                { 'for': 'markdown' }
+    Plug 'plasticboy/vim-markdown',          { 'for': 'markdown' }
+
   " Styles
 
     " CSS

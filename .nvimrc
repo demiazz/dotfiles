@@ -83,6 +83,9 @@ call plug#begin('~/.nvim/plugged')
     " Go
     Plug 'fatih/vim-go',                     { 'for': 'go' }
 
+    " TypeScript
+    Plug 'leafgarland/typescript-vim',       { 'for': 'typescript' }
+
   " Frameworks
 
     " Ruby On Rails

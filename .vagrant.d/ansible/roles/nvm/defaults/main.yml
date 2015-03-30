@@ -1,5 +1,5 @@
 ---
-nvm_version: 0.23.2
+nvm_version: 0.24.0
 nvm_install:
   - stable
 nvm_default: stable

@@ -7,7 +7,6 @@ endif
 call plug#begin('~/.nvim/plugged')
 
   " Interface
-
     " Startup screen
     Plug 'mhinz/vim-startify'
 
@@ -29,7 +28,8 @@ call plug#begin('~/.nvim/plugged')
     Plug 'vim-scripts/IndexedSearch'
 
     " File open
-    Plug 'Shougo/unite.vim'
+    Plug 'kien/ctrlp.vim'
+    Plug 'FelikZ/ctrlp-py-matcher'
 
     " Trailing whitespaces
     Plug 'rondale-sc/vim-spacejam'

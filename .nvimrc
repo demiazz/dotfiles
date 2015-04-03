@@ -29,7 +29,7 @@ call plug#begin('~/.nvim/plugged')
     Plug 'vim-scripts/IndexedSearch'
 
     " File open
-    Plug 'kien/ctrlp.vim'
+    Plug 'Shougo/unite.vim'
 
     " Trailing whitespaces
     Plug 'rondale-sc/vim-spacejam'

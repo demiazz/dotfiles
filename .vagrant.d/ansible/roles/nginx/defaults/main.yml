@@ -1,6 +1,6 @@
 ---
 nginx_install_method: "source"
-nginx_source_version: "1.7.11"
+nginx_source_version: "1.7.12"
 
 nginx_user: www-data
 nginx_group: www-data

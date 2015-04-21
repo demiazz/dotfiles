@@ -5,18 +5,4 @@
     - hosts
     - workspace
 
-- hosts: pb7con
-  sudo: yes
-
-  roles:
-    - maven
-    - leiningen
-    - elixir
-
-- hosts: erl
-  sudo: yes
-
-  roles:
-    - rebar
-
 - include: playbook.priv.yml

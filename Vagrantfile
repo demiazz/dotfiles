@@ -108,7 +108,10 @@ class Settings
 
     # Merge instances
     #
-    instances = pub.fetch('instances', []) + priv.fetch('instances', [])
+    pub_instances  = pub.fetch('instances', nil) || []
+    priv_instances = priv.fetch('instances', nil) || []
+
+    instances = pub_instances + priv_instances
 
     # Build merge settings
     #

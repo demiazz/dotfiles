@@ -98,3 +98,6 @@ alias evpr="$EDITOR ~/.vagrant.priv.yml"
 alias eans="$EDITOR ~/.vagrant.d/ansible"
 alias ezsh="$EDITOR ~/.zshrc"
 
+# Midnight Commander
+
+alias mc="mc --skin=gray-orange-blue256"

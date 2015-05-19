@@ -67,12 +67,16 @@ fi
 
 # Chruby
 
-chruby ruby-2.2.0
+if $(whence chruby); then
+  chruby ruby-2.2.0
+fi
 
 # NVM
 
-export NVM_DIR=~/.nvm
-source $(brew --prefix nvm)/nvm.sh
+if [[ -d $HOME/.nvm ]]; then
+  export NVM_DIR=~/.nvm
+  source "$NVM_DIR/nvm.sh"
+fi
 
 # Aliases
 #

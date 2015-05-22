@@ -10,7 +10,6 @@ class Box
   def initialize(options)
     @name     = options['name']
     @username = options['username']
-    @key      = File.expand_path("~/.ssh/#{ options['key'] }")
   end
 end
 
@@ -181,9 +180,8 @@ Vagrant.configure(2) do |vagrant|
 
   # Configure ssh
   #
-  vagrant.ssh.username         = settings.box.username
-  vagrant.ssh.private_key_path = settings.box.key
-  vagrant.ssh.forward_agent    = true
+  vagrant.ssh.username      = settings.box.username
+  vagrant.ssh.forward_agent = true
 
   # Configure instances
   #

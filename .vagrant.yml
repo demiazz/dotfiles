@@ -1,8 +1,7 @@
 ---
 box:
-  name:     "ubuntu"
-  username: "demiazz"
-  key:      "vagrant"
+  name:     "ubuntu-lts"
+  username: "vagrant"
 
 sizes:
   small:
@@ -16,3 +15,5 @@ sizes:
     memory: 4096
 
 instances:
+  - host: test
+    size: small

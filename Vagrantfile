@@ -1,82 +1,66 @@
-require 'ostruct'
-require 'pathname'
 require 'yaml'
 
-# Box
-#
+
+VAGRANT_ROOT = File.expand_path('~/.vagrant.d')
+
+
 class Box
-  attr_reader :name, :username, :key
+  attr_reader :name, :username
 
-  def initialize(options)
-    @name     = options['name']
-    @username = options['username']
+  def initialize(name, username)
+    @name     = name
+    @username = username
   end
 end
 
-# Size
-#
+
 class Size
-  attr_reader :cpus, :memory, :default
+  attr_reader :cpus, :memory
 
-  def initialize(options)
-    @cpus    = options.fetch('cpus', 1)
-    @memory  = options.fetch('memory', 1024)
-    @default = options.fetch('default', false)
+  def initialize(cpus, memory)
+    @cpus   = cpus
+    @memory = memory
   end
 end
 
-# Instance
-#
+
 class Instance
-  attr_reader :host, :domain, :username, :groups, :sync, :cpus, :memory
+  attr_reader :host
 
   def initialize(options)
-    @host     = options['host']
-    @domain   = options.fetch('domain', "#{ @host }.dev")
-    @username = options['username']
-    @groups   = options.fetch('groups', [])
-    @sync     = options.fetch('sync', []).map { |f| process_sync(f) }
-    @cpus     = options['cpus']
-    @memory   = options['memory']
+    @host = options['host']
+    @box  = options['box']
+    @size = options['size']
   end
 
-  private
+  def box
+    @box.name
+  end
 
-  def process_sync(folder)
-    result = { name: folder['name'] }
+  def username
+    @box.username
+  end
 
-    result[:src] = if Pathname.new(folder['src']).absolute?
-                     folder['src']
-                   else
-                     File.expand_path(File.join('~', folder['src']))
-                   end
+  def cpus
+    @size.cpus
+  end
 
-    result[:dest] = if Pathname.new(folder['dest']).absolute?
-                      folder['dest']
-                    else
-                      File.expand_path(
-                        File.join("/home/#{ @username }", folder['dest'])
-                      )
-                    end
-
-    OpenStruct.new(result)
+  def memory
+    @size.memory
   end
 end
 
-# Settings
-#
-class Settings
-  PUBLIC_SETTINGS  = File.expand_path('~/.vagrant.yml')
-  PRIVATE_SETTINGS = File.expand_path('~/.vagrant.priv.yml')
 
-  attr_reader :box, :instances
+class Presets
+  PRESETS_FILE = File.join(VAGRANT_ROOT, 'presets.yml')
 
   def initialize
-    load_settings
+    load
+    parse
+  end
 
-    create_box
-    create_sizes
-    create_instances
+  def box(name)
+    @boxes[name]
   end
 
   def size(name)
@@ -85,177 +69,110 @@ class Settings
 
   private
 
-  def load_settings
-    pub  = YAML.load(File.read(PUBLIC_SETTINGS))
-    priv = if File.exist?(PRIVATE_SETTINGS)
-             YAML.load(File.read(PRIVATE_SETTINGS))
-           else
-             {}
-           end
-
-    @settings = merge_settings(pub, priv)
+  def load
+    @presets = YAML.load(File.read(PRESETS_FILE))
   end
 
-  def merge_settings(pub, priv)
-    # Merge box settings
-    #
-    box = {}.merge(pub.fetch('box', {})).merge(priv.fetch('box', {}))
-
-    # Merge sizes settings
-    #
-    sizes = {}.merge(pub.fetch('sizes', {})).merge(priv.fetch('sizes', {}))
-
-    # Merge instances
-    #
-    pub_instances  = pub.fetch('instances', nil) || []
-    priv_instances = priv.fetch('instances', nil) || []
-
-    instances = pub_instances + priv_instances
-
-    # Build merge settings
-    #
-    { 'box' => box, 'sizes' => sizes, 'instances' => instances }
+  def parse
+    parse_boxes
+    parse_sizes
   end
 
-  def create_box
-    @box = Box.new(@settings['box'])
+  def parse_boxes
+    @boxes = {}
+
+    @presets['boxes'].each do |box_name, box_attrs|
+      @boxes[box_name] = Box.new(box_attrs['name'], box_attrs['username'])
+    end
   end
 
-  def create_sizes
+  def parse_sizes
     @sizes = {}
 
-    @settings['sizes'].each do |name, config|
-      @sizes[name] = Size.new(config)
-    end
-  end
-
-  def create_instances
-    @instances = @settings['instances'].map do |instance|
-      size = @sizes[instance['size']]
-
-      Instance.new(
-        instance.merge({
-          'username' => @box.username,
-          'cpus'     => size.cpus,
-          'memory'   => size.memory
-        })
-      )
+    @presets['sizes'].each do |size_name, size_attrs|
+      @sizes[size_name] = Size.new(size_attrs['cpus'], size_attrs['memory'])
     end
   end
 end
 
-# IPManager
-#
-class IPManager
-  attr_reader :registry
 
-  def initialize
-    @network  = "192.168.100"
-    @node     = 10
+class InstanceFactory
+  PUBLIC_INSTANCES  = File.join(VAGRANT_ROOT, 'instances.public.yml')
+  PRIVATE_INSTANCES = File.join(VAGRANT_ROOT, 'instances.private.yml')
 
-    @registry = {}
+  def initialize(presets)
+    @presets = presets
+
+    load
+    parse
   end
 
-  def register_node(host, domain)
-    ip = "#{ @network }.#{ @node }"
+  def each(&block)
+    @instances.each(&block)
+  end
 
-    @registry[host] = { 'domain' => domain, 'ip' => ip }
+  private
 
-    @node += 1
+  def load
+    public_instances  = YAML.load(File.read(PUBLIC_INSTANCES))
+    private_instances = if File.exist?(PRIVATE_INSTANCES)
+                          YAML.load(File.read(PRIVATE_INSTANCES))
+                        end
 
-    ip
+    public_instances  ||= []
+    private_instances ||= []
+
+    @raw_instances = public_instances + private_instances
+  end
+
+  def parse
+    @instances = @raw_instances.map do |instance|
+      parse_instance(instance)
+    end
+  end
+
+  def parse_instance(instance)
+    options = {}.merge(instance)
+
+    options['box']  = @presets.box(options['box'])
+    options['size'] = @presets.size(options['size'])
+
+    Instance.new(options)
   end
 end
 
-# Vagrant
-#
+
 Vagrant.configure(2) do |vagrant|
-  settings   = Settings.new
-  ip_manager = IPManager.new
+  presets   = Presets.new
+  instances = InstanceFactory.new(presets)
 
-  # Configure box
-  #
-  vagrant.vm.box              = settings.box.name
-  vagrant.vm.box_check_update = false
-
-  # Configure ssh
-  #
-  vagrant.ssh.username      = settings.box.username
-  vagrant.ssh.forward_agent = true
-
-  # Configure instances
-  #
-  settings.instances.each do |instance|
-    ip = ip_manager.register_node(instance.host, instance.domain)
-
-    vagrant.vm.define instance.host, autostart: true do |config|
+  instances.each do |instance|
+    vagrant.vm.define instance.host do |config|
+      # Configure hostname
+      #
       config.vm.hostname = instance.host
 
-      config.vm.network(:private_network, ip: ip)
+      # Configure box
+      #
+      config.vm.box              = instance.box
+      config.vm.box_check_update = false
 
-      instance.sync.each do |folder|
-        config.vm.synced_folder(folder.src, folder.dest)
-      end
+      # Configure ssh
+      #
+      config.ssh.username      = instance.username
+      config.ssh.forward_agent = true
 
+      # Configure network
+      #
+      config.vm.network(:private_network, type: 'dhcp')
+
+      # Configure provider
+      #
       config.vm.provider :parallels do |provider|
         provider.cpus               = instance.cpus
         provider.memory             = instance.memory
         provider.update_guest_tools = true
       end
     end
-  end
-
-  # Provision
-  #
-  vagrant.vm.provision :ansible do |ansible|
-    # Playbook
-    #
-    ansible.playbook = File.expand_path('~/.vagrant.d/ansible/playbook.yml')
-
-    # Sudo
-    #
-    ansible.sudo = true
-
-    # Ansible groups
-    #
-    ansible.groups = {}
-
-    settings.instances.each do |instance|
-      instance.groups.each do |group|
-        ansible.groups[group] ||= []
-
-        ansible.groups[group] << instance.host
-      end
-    end
-
-    # Ansible vars
-    #
-    ansible.extra_vars = {}
-
-    # Ansible user
-    #
-    ansible.extra_vars['user'] = settings.box.username
-
-    # Ansible DNS table
-    #
-    ansible.extra_vars['ips'] = ip_manager.registry
-
-    # Ansible synced folders
-    #
-    ansible.extra_vars['sync'] = {}
-
-    settings.instances.each do |instance|
-      folders = {}
-
-      instance.sync.each do |folder|
-        folders[folder.name] = folder.dest
-      end
-
-      ansible.extra_vars['sync'][instance.host] = folders
-    end
-
-    # Ansible command line arguments
-    #
-    ansible.raw_arguments = ['--ask-sudo-pass']
   end
 end

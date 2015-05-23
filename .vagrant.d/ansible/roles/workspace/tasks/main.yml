@@ -20,7 +20,7 @@
 # Neovim
 
 - name: Install neovim dependencies
-  apt:
+  apt:    
     name: "{{ item }}"
     state: "latest"
   with_items:
@@ -95,12 +95,5 @@
   sudo: yes
   sudo_user: "{{ ansible_ssh_user }}"
   command: "cp /tmp/dotfiles/.nvimrc ~"
-  tags:
-    - workspace
-
-- name: Install nvim plug manager dependency
-  apt:
-    name: "curl"
-    state: "latest"
   tags:
     - workspace

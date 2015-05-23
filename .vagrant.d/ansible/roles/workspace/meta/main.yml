@@ -3,3 +3,4 @@ dependencies:
   - locale
   - git
   - oh-my-zsh
+  - curl

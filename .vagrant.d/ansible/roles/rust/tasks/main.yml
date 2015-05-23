@@ -1,0 +1,21 @@
+---
+
+- name: Registers the current Rust version (if any)
+  command: /usr/local/bin/rustc --version
+  ignore_errors: yes
+  register: current_rust_version
+  tags:
+    - rust
+
+- name: Removes installed Rust distribution
+  command: /usr/local/lib/rustlib/uninstall.sh
+  ignore_errors: yes
+  when: current_rust_version|failed or not current_rust_version.stdout|match('rustc {{ rust_version }}.*')
+  tags:
+    - rust
+
+- name: Install Rust
+  shell: "curl -sSf https://static.rust-lang.org/rustup.sh | sh -s -- -y --revision={{ rust_version }}"
+  when: current_rust_version|failed or not current_rust_version.stdout|match('rustc {{ rust_version }}.*')
+  tags:
+    - rust

@@ -27,7 +27,7 @@ end
 
 
 class Instance
-  attr_reader :host, :domains, :sync
+  attr_reader :host, :domains, :sync, :groups
 
   def initialize(options)
     @host    = options['host']
@@ -37,6 +37,7 @@ class Instance
     @domains = ["#{ @host }.dev"] + @domains
     @sync    = options.fetch('sync', nil) || []
     @sync    = @sync.map { |sync| process_sync(sync) }
+    @groups  = options.fetch('groups', nil) || []
   end
 
   def box
@@ -58,7 +59,7 @@ class Instance
   private
 
   def process_sync(sync)
-    result = {}
+    result = { name: sync['name'] }
 
     result['from'] = if Pathname.new(sync['from']).absolute?
                        sync['from']
@@ -179,43 +180,83 @@ Vagrant.configure(2) do |vagrant|
 
   vagrant.vm.provision :hostmanager
 
-  instances.each do |instance|
-    vagrant.vm.define instance.host do |config|
+  instances.each do |config|
+    vagrant.vm.define config.host do |node|
       # Configure hostname
       #
-      config.vm.hostname = instance.host
+      node.vm.hostname = config.host
 
       # Configure box
       #
-      config.vm.box              = instance.box
-      config.vm.box_check_update = false
+      node.vm.box              = config.box
+      node.vm.box_check_update = false
 
       # Configure ssh
       #
-      config.ssh.username      = instance.username
-      config.ssh.forward_agent = true
+      node.ssh.username      = config.username
+      node.ssh.forward_agent = true
 
       # Configure network
       #
-      config.vm.network(:private_network, type: 'dhcp')
+      node.vm.network(:private_network, type: 'dhcp')
 
       # Configure hostmanager
       #
-      config.hostmanager.aliases = instance.domains
+      node.hostmanager.aliases = config.domains
 
       # Configure sync folders
       #
-      instance.sync.each do |sync|
-        config.vm.synced_folder(sync.from, sync.to)
+      config.sync.each do |sync|
+        node.vm.synced_folder(sync.from, sync.to)
       end
 
       # Configure provider
       #
-      config.vm.provider :parallels do |provider|
-        provider.cpus               = instance.cpus
-        provider.memory             = instance.memory
+      node.vm.provider :parallels do |provider|
+        provider.cpus               = config.cpus
+        provider.memory             = config.memory
         provider.update_guest_tools = true
       end
+    end
+  end
+
+  vagrant.vm.provision :ansible do |ansible|
+    # Playbook
+    #
+    ansible.playbook = File.expand_path('~/.vagrant.d/ansible/playbook.yml')
+
+    # Sudo
+    #
+    ansible.sudo = true
+
+    # Ansible groups
+    #
+    ansible.groups = {}
+
+    instances.each do |instance|
+      instance.groups.each do |group|
+        ansible.groups[group] ||= []
+
+        ansible.groups[group] << instance.host
+      end
+    end
+
+    # Ansible vars
+    #
+    ansible.extra_vars = {}
+
+    # Ansible synced folders
+    #
+    ansible.extra_vars['sync'] = {}
+
+    instances.each do |instance|
+      folders = {}
+
+      instance.sync.each do |sync|
+        folders[sync.name] = sync.to
+      end
+
+      ansible.extra_vars['sync'][instance.host] = folders
     end
   end
 end

@@ -86,6 +86,9 @@ call plug#begin('~/.nvim/plugged')
     " TypeScript
     Plug 'leafgarland/typescript-vim',       { 'for': 'typescript' }
 
+    " Rust
+    Plug "rust-lang/rust.vim",               { 'for': 'rust' }
+
   " Frameworks
 
     " Ruby On Rails

@@ -1,0 +1,16 @@
+# Instance example:
+#
+#   - host: '<host-name>'
+#     box:  '<box-name>'
+#     size: '<size-name>'
+#     domains: 
+#       - '<domain-1>'
+#       - '<domain-2>'
+#     groups:
+#       - '<ansible-group-1>'
+#       - '<ansible-group-2>'
+#     sync:
+#       - name: '<sync-folder-name-for-ansible>'
+#         from: '<path-to-folder-on-host>'
+#         to:   '<path-to-folder-on-guest>'
+---

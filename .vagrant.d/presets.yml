@@ -1,0 +1,23 @@
+---
+# Boxes
+#
+boxes:
+  ubuntu-lts:
+    name:     'ubuntu-lts'
+    username: 'vagrant'
+  ubuntu-latest:
+    name:     'ubuntu-latest'
+    username: 'vagrant'
+
+# Sizes
+#
+sizes:
+  small:
+    cpus:   1
+    memory: 1024
+  medium:
+    cpus:   2
+    memory: 2048
+  large:
+    cpus:   4
+    memory: 4096 

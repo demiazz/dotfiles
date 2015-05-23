@@ -24,30 +24,30 @@
 
 - name: Install Ocaml
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   command: "opam init -a --comp={{ ocaml_version }}"
   tags:
     - ocaml
 
 - name: Install core library
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   shell: eval `opam config env` && opam install -y core
   tags:
     - ocaml
 
 - name: Install utop
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   shell: eval `opam config env` && opam install -y utop
   tags:
     - ocaml
 
 - name: Configure utop
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   lineinfile:
-    dest: "~{{ user }}/.ocamlinit"
+    dest: "~{{ ansible_ssh_user }}/.ocamlinit"
     insertafter: EOF
     line: "{{ item }}"
     state: present
@@ -63,7 +63,7 @@
 
 - name: Install ocaml packages
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   shell: "eval `opam config env` && opam install -y {{ item }}"
   with_items: ocaml_packages
   tags:

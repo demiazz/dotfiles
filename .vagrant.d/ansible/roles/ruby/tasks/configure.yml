@@ -2,27 +2,27 @@
 - name: Configure default ruby version
   template:
     src: ruby-version.j2
-    dest: ~{{ user }}/.ruby-version
-    owner: "{{ user }}"
+    dest: ~{{ ansible_ssh_user }}/.ruby-version
+    owner: "{{ ansible_ssh_user }}"
     mode: 0644
 
 - name: Configure rubygems
   template:
     src: gemrc.j2
-    dest: ~{{ user }}/.gemrc
-    owner: "{{ user }}"
+    dest: ~{{ ansible_ssh_user }}/.gemrc
+    owner: "{{ ansible_ssh_user }}"
     mode: 0644
 
 - name: Create .bundle directory
   file:
-    path: ~{{ user }}/.bundle
+    path: ~{{ ansible_ssh_user }}/.bundle
     state: directory
-    owner: "{{ user }}"
+    owner: "{{ ansible_ssh_user }}"
 
 - name: Configure bundler
   template:
     src: bundler.j2
-    dest: ~{{ user }}/.bundle/config
-    owner: "{{ user }}"
+    dest: ~{{ ansible_ssh_user }}/.bundle/config
+    owner: "{{ ansible_ssh_user }}"
     mode: 0644
   when: ansible_processor_vcpus > 1

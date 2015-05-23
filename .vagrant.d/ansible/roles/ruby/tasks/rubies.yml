@@ -9,7 +9,7 @@
 
 - name: Install user rubies
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   shell: if ! [ -d ~/.rubies/{{ item.dir }} ]; then ruby-build {{ item.version }} ~/.rubies/{{ item.dir }}; fi
   with_items: ruby_versions | versions_for_ruby_build
   tags: ruby

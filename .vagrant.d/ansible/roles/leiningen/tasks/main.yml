@@ -12,7 +12,7 @@
 
 - name: Install leiningen
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   command: lein
   tags:
     - clojure

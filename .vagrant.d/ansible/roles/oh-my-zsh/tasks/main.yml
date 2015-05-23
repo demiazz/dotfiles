@@ -1,7 +1,7 @@
 ---
 - name: Installing oh-my-zsh
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   git:
     repo: http://github.com/robbyrussell/oh-my-zsh.git
     dest: ~/.oh-my-zsh
@@ -11,7 +11,7 @@
 
 - name: Backing up existing ~/.zshrc
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   shell: if [ -f ~/.zshrc ]; then mv ~/.zshrc ~/.zshrc.orig; fi
   tags:
     - zsh
@@ -19,7 +19,7 @@
 
 - name: Creating new ~/.zshrc
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   template: src=zshrc.j2 dest=~/.zshrc mode=0644
   tags:
     - zsh

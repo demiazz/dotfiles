@@ -52,6 +52,6 @@
   tags: golang
 
 - name: Installs Go packages
-  command: sudo -iu {{ user }} go get {{ item }}
+  command: sudo -iu {{ ansible_ssh_user }} go get {{ item }}
   with_items: golang_packages
   tags: golang

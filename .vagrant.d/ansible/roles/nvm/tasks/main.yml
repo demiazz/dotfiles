@@ -12,7 +12,7 @@
 
 - name: Installs nvm
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   git:
     repo: https://github.com/creationix/nvm.git
     dest: ~/.nvm
@@ -21,7 +21,7 @@
 
 - name: Sources nvm in ~/.profile
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   lineinfile:
     dest: ~/.profile
     line: "source ~/.nvm/nvm.sh"
@@ -29,13 +29,13 @@
 
 - name: Installs node versions
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   command: /bin/bash -c "source ~/.nvm/nvm.sh && nvm install {{ item }}"
   with_items: nvm_install
   tags: nvm
 
 - name: Sets default node version
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   command: /bin/bash -c "source ~/.nvm/nvm.sh && nvm alias default {{ nvm_default }}"
   tags: nvm

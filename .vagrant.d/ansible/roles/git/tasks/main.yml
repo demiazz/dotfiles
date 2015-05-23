@@ -7,14 +7,14 @@
 
 - name: Backing up existing ~/.gitconfig
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   shell: if [ -f ~/.gitconfig ]; then mv ~/.gitconfig ~/.gitconfig.orig; fi
   when: git_config is defined
   tags: git
 
 - name: Creating new ~/.gitconfig
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   template:
     src: gitconfig.j2
     dest: "~/.gitconfig"
@@ -24,14 +24,14 @@
 
 - name: Backing up existing ~/.gitignore
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   shell: if [ -f ~/.gitignore ]; then mv ~/.gitignore ~/.gitignore.orig; fi
   when: git_ignore is defined
   tags: git
 
 - name: Creating new ~/.gitignore
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   template:
     src: gitignore.j2
     dest: "~/.gitignore"

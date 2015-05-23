@@ -20,13 +20,13 @@
 
 - name: Set 'zsh' as default shell for user
   user:
-    name: "{{ user }}"
+    name: "{{ ansible_ssh_user }}"
     shell: /usr/bin/zsh
   tags: zsh
 
 - name: Checks existing .zshrc
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   stat:
     path: ~/.zshrc
   register: zshrc
@@ -34,7 +34,7 @@
 
 - name: Sources $HOME/.profile to $HOME/.zshrc
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   lineinfile:
     dest: ~/.zshrc
     insertbefore: BOF

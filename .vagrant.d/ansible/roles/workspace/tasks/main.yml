@@ -70,7 +70,7 @@
 
 - name: Clone configuration files repository
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   git:
     repo: "https://github.com/demiazz/dotfiles.git"
     dest: "/tmp/dotfiles"
@@ -79,21 +79,21 @@
 
 - name: Copy git configuration files
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   command: "cp /tmp/dotfiles/.gitconfig ~"
   tags:
     - workspace
 
 - name: Copy .gitignore file
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   command: "cp /tmp/dotfiles/.gitignore ~"
   tags:
     - workspace
 
 - name: Copy .nvimrc file
   sudo: yes
-  sudo_user: "{{ user }}"
+  sudo_user: "{{ ansible_ssh_user }}"
   command: "cp /tmp/dotfiles/.nvimrc ~"
   tags:
     - workspace

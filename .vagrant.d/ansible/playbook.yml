@@ -2,7 +2,6 @@
   sudo: yes
 
   roles:
-    - hosts
     - workspace
 
 - include: playbook.priv.yml

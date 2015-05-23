@@ -93,8 +93,8 @@ alias vp="vagrant provision"
 # Configs
 
 alias evim="$EDITOR ~/.nvimrc"
-alias evpu="$EDITOR ~/.vagrant.yml"
-alias evpr="$EDITOR ~/.vagrant.priv.yml"
+alias evpu="$EDITOR ~/.vagrant.d/instances.public.yml"
+alias evpr="$EDITOR ~/.vagrant.d/instances.private.yml"
 alias eans="$EDITOR ~/.vagrant.d/ansible"
 alias ezsh="$EDITOR ~/.zshrc"
 

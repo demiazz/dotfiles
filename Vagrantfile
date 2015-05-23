@@ -25,12 +25,14 @@ end
 
 
 class Instance
-  attr_reader :host
+  attr_reader :host, :domains
 
   def initialize(options)
-    @host = options['host']
-    @box  = options['box']
-    @size = options['size']
+    @host    = options['host']
+    @box     = options['box']
+    @size    = options['size']
+    @domains = options.fetch('domains', nil) || []
+    @domains = ["#{ @host }.dev"] + @domains
   end
 
   def box
@@ -146,6 +148,13 @@ Vagrant.configure(2) do |vagrant|
   presets   = Presets.new
   instances = InstanceFactory.new(presets)
 
+  vagrant.hostmanager.enabled           = true
+  vagrant.hostmanager.manage_host       = true
+  vagrant.hostmanager.ignore_private_ip = false
+  vagrant.hostmanager.include_offline   = true
+
+  vagrant.vm.provision :hostmanager
+
   instances.each do |instance|
     vagrant.vm.define instance.host do |config|
       # Configure hostname
@@ -165,6 +174,10 @@ Vagrant.configure(2) do |vagrant|
       # Configure network
       #
       config.vm.network(:private_network, type: 'dhcp')
+
+      # Configure hostmanager
+      #
+      config.hostmanager.aliases = instance.domains
 
       # Configure provider
       #

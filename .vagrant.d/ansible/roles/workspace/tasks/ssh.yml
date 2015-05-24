@@ -1,0 +1,26 @@
+---
+- name: Copy private SSH key
+  sudo: yes
+  sudo_user: "{{ ansible_ssh_user }}"
+  copy:
+    src: "~/.ssh/id_rsa"
+    dest: "~/.ssh/id_rsa"
+
+- name: Copy public SSH key
+  sudo: yes
+  sudo_user: "{{ ansible_ssh_user }}"
+  copy:
+    src: "~/.ssh/id_rsa.pub"
+    dest: "~/.ssh/id_rsa.pub"
+
+- name: Check known hosts for Github
+  sudo: yes
+  sudo_user: "{{ ansible_ssh_user }}"
+  shell: "grep 'github.com' ~/.ssh/known_hosts"
+  register: known_hosts_github
+
+- name: Scan all github.com keys and adds to known hosts
+  sudo: yes
+  sudo_user: "{{ ansible_ssh_user }}"
+  shell: "ssh-keyscan github.com >> ~/.ssh/known_hosts"
+  when: not known_hosts_github.stdout

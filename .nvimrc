@@ -7,9 +7,6 @@ endif
 call plug#begin('~/.nvim/plugged')
 
   " Interface
-    " Startup screen
-    Plug 'mhinz/vim-startify'
-
     " Status line
     Plug 'itchyny/lightline.vim'
 
@@ -42,10 +39,6 @@ call plug#begin('~/.nvim/plugged')
 
     " Git support
     Plug 'tpope/vim-fugitive'
-
-    " Snippets
-    Plug 'SirVer/ultisnips'
-    Plug 'honza/vim-snippets'
 
   " Languages
 
@@ -87,7 +80,7 @@ call plug#begin('~/.nvim/plugged')
     Plug 'leafgarland/typescript-vim',       { 'for': 'typescript' }
 
     " Rust
-    Plug "rust-lang/rust.vim",               { 'for': 'rust' }
+    Plug 'rust-lang/rust.vim',               { 'for': 'rust' }
 
   " Frameworks
 

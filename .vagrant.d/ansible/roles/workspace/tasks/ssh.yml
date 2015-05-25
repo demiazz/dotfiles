@@ -7,7 +7,7 @@
     dest: "~/.ssh/id_rsa"
     owner: "{{ ansible_ssh_user }}"
     group: "{{ ansible_ssh_user }}"
-    mode: 600
+    mode: "u=rw,g=,o="
 
 - name: Copy public SSH key
   sudo: yes
@@ -17,30 +17,7 @@
     dest: "~/.ssh/id_rsa.pub"
     owner: "{{ ansible_ssh_user }}"
     group: "{{ ansible_ssh_user }}"
-    mode: 600
-
-- name: Check existing known_hosts file
-  sudo: yes
-  sudo_user: "{{ ansible_ssh_user }}"
-  file:
-    path: "~/.ssh/known_hosts"
-    state: "touch"
-    owner: "{{ ansible_ssh_user }}"
-    group: "{{ ansible_ssh_user }}"
-    mode: 644
-
-- name: Check known hosts for Github
-  sudo: yes
-  sudo_user: "{{ ansible_ssh_user }}"
-  shell: "grep 'github.com' ~/.ssh/known_hosts"
-  register: known_hosts_github
-  ignore_errors: yes
-
-- name: Scan all github.com keys and adds to known hosts
-  sudo: yes
-  sudo_user: "{{ ansible_ssh_user }}"
-  shell: "ssh-keyscan github.com >> ~/.ssh/known_hosts"
-  when: known_hosts_github|failed
+    mode: "u=rw,g=,o="
 
 - name: Fix access rights for .ssh
   sudo: yes
@@ -49,4 +26,4 @@
     path: "~/.ssh"
     owner: "{{ ansible_ssh_user }}"
     group: "{{ ansible_ssh_user }}"
-    mode: 755
+    mode: "u=rwx,g=,o="

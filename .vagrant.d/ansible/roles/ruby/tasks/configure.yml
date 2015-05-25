@@ -4,6 +4,7 @@
     src: ruby-version.j2
     dest: ~{{ ansible_ssh_user }}/.ruby-version
     owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
     mode: 0644
 
 - name: Configure rubygems
@@ -11,6 +12,7 @@
     src: gemrc.j2
     dest: ~{{ ansible_ssh_user }}/.gemrc
     owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
     mode: 0644
 
 - name: Create .bundle directory
@@ -18,11 +20,13 @@
     path: ~{{ ansible_ssh_user }}/.bundle
     state: directory
     owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
 
 - name: Configure bundler
   template:
     src: bundler.j2
     dest: ~{{ ansible_ssh_user }}/.bundle/config
     owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
     mode: 0644
   when: ansible_processor_vcpus > 1

@@ -5,4 +5,4 @@
   roles:
     - workspace
 
-- include: playbook.priv.yml
+- include: playbook.private.yml

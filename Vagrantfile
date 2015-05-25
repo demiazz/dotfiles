@@ -249,14 +249,22 @@ Vagrant.configure(2) do |vagrant|
     #
     ansible.extra_vars['sync'] = {}
 
-    instances.each do |instance|
+    instances.each do |config|
       folders = {}
 
-      instance.sync.each do |sync|
+      config.sync.each do |sync|
         folders[sync.name] = sync.to
       end
 
-      ansible.extra_vars['sync'][instance.host] = folders
+      ansible.extra_vars['sync'][config.host] = folders
+    end
+
+    # Ansible domains
+    #
+    ansible.extra_vars['domains'] = {}
+
+    instances.each do |config|
+      ansible.extra_vars['domains'][config.host] = config.domains
     end
   end
 end

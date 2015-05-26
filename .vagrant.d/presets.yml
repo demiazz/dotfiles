@@ -4,7 +4,7 @@
 boxes:
   ubuntu-lts:
     name:     'ubuntu-lts'
-    username: 'vagrant'
+    username: 'demiazz'
 
 # Sizes
 #

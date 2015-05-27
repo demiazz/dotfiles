@@ -5,6 +5,9 @@ boxes:
   ubuntu-lts:
     name:     'ubuntu-lts'
     username: 'demiazz'
+  ubuntu-latest:
+    name:     'ubuntu-latest'
+    username: 'demiazz'
 
 # Sizes
 #

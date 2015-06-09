@@ -1,0 +1,19 @@
+- name: Add CouchDB Team repository
+  apt_repository:
+    repo: 'ppa:couchdb/stable'
+
+- name: Install CouchDB from repository
+  apt:
+    name: 'couchdb'
+    update_cache: yes
+
+- name: Make CouchDB visible from host
+  lineinfile:
+    dest: '/etc/couchdb/default.ini'
+    regexp: '^bind_address = 127.0.0.1'
+    line: 'bind_address = 0.0.0.0'
+
+- name: Restart CouchDB server
+  service:
+    name: 'couchdb'
+    state: 'restarted'

@@ -35,7 +35,7 @@ nginx_buffers: "on"
 nginx_client_body_buffer_size: "8k"
 nginx_client_header_buffer_size: "1k"
 nginx_client_max_body_size: "2m"
-nginx_large_client_header_buffers: "2 1k"
+nginx_large_client_header_buffers: "4 16k"
 nginx_server_names_hash_bucket_size: 64
 nginx_types_hash_max_size: 2048
 nginx_types_hash_bucket_size: 64

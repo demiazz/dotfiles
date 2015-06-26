@@ -1,0 +1,21 @@
+---
+- name: Removes the package 'emacs' if installed
+  apt:
+    name: 
+      - 'emacs23'
+      - 'emacs24'
+    state: 'absent'
+  tags:
+    - 'emacs'
+
+- name: Register the current Emacs version (if any)
+  command: 'emacs --version'
+  ignore_errors: yes
+  register: 'current_emacs_version'
+  tags:
+    - 'emacs'
+
+- include: 'install.yml'
+  when: 'current_emacs_version|failed or not current_emacs_version.stdout_lines[0]|search("^GNU Emacs {{ emacs_version }}.*")'
+  tags:
+    - 'emacs'

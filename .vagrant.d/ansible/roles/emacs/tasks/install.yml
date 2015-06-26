@@ -1,0 +1,54 @@
+---
+- name: Install wget
+  apt:
+    name: 'wget'
+    state: 'present'
+  tags:
+    - 'emacs'
+
+- name: Install build essentials
+  apt:
+    name: 'build-essential'
+    state: 'present'
+  tags:
+    - 'emacs'
+
+- name: Install build deps for Emacs 24
+  shell: 'DEBIAN_FRONTEND=noninteractive apt-get build-dep -y emacs24'
+  tags:
+    - 'emacs'
+
+- name: Download Emacs 24 sources
+  shell: 'wget http://ftp.gnu.org/gnu/emacs/emacs-{{ emacs_version }}.tar.gz'
+  args:
+    chdir: '/tmp'
+  tags:
+    - 'emacs'
+
+- name: Extract Emacs 24 sources
+  shell: 'tar -xf emacs-{{ emacs_version }}.tar.gz'
+  args:
+    chdir: '/tmp'
+  tags:
+    - 'emacs'
+
+- name: Build and install Emacs 24
+  shell: './configure && make && make install'
+  args:
+    chdir: '/tmp/emacs-{{ emacs_version }}'
+  tags:
+    - 'emacs'
+
+- name: Remove downloaded archive
+  shell: 'rm emacs-{{ emacs_version }}.tar.gz'
+  args:
+    chdir: '/tmp'
+  tags:
+    - 'emacs'
+
+- name: Remove unarchived sources
+  shell: 'rm -rf emacs-{{ emacs_version }}'
+  arsg:
+    chdir: '/tmp'
+  tags:
+    - 'emacs'

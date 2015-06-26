@@ -1,0 +1,10 @@
+---
+- name: Install spacemacs
+  sudo: yes
+  sudo_user: '{{ ansible_ssh_user }}'
+  git:
+    repo: 'https://github.com/syl20bnr/spacemacs'
+    dest: '~/.emacs.d'
+    recursive: yes
+  tags:
+    - 'spacemacs'

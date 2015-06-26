@@ -48,7 +48,7 @@
 
 - name: Remove unarchived sources
   shell: 'rm -rf emacs-{{ emacs_version }}'
-  arsg:
+  args:
     chdir: '/tmp'
   tags:
     - 'emacs'

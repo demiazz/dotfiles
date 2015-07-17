@@ -63,8 +63,3 @@
   when: 'es_manage_service'
   tags:
     - 'elasticsearch'
-
-- include: 'plugins.yml'
-  tags:
-    - 'elasticsearch'
-    - 'elasticsearch-plugins'

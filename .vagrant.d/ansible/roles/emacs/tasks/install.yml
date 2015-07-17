@@ -6,6 +6,13 @@
   tags:
     - 'emacs'
 
+- name: Install libacl
+  apt:
+    name: 'libacl1-dev'
+    state: 'present'
+  tags:
+    - 'emacs'
+
 - name: Install build essentials
   apt:
     name: 'build-essential'
@@ -33,7 +40,7 @@
     - 'emacs'
 
 - name: Build and install Emacs 24
-  shell: './configure && make && make install'
+  shell: './configure --with-x-toolkit=no && make && make install'
   args:
     chdir: '/tmp/emacs-{{ emacs_version }}'
   tags:

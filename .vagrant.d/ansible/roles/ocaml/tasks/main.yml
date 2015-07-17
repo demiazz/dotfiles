@@ -61,6 +61,16 @@
   tags:
     - ocaml
 
+- name: Install support packages for development
+  sudo: yes
+  sudo_user: "{{ ansible_ssh_user }}"
+  shell: "eval `opam config env` && opam install -y {{ item }}"
+  with_items:
+    - 'ocp-indent'
+    - 'merlin'
+  tags:
+    - ocaml
+
 - name: Install ocaml packages
   sudo: yes
   sudo_user: "{{ ansible_ssh_user }}"

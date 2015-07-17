@@ -82,6 +82,9 @@ call plug#begin('~/.nvim/plugged')
     " Rust
     Plug 'rust-lang/rust.vim',               { 'for': 'rust' }
 
+    " Haskell
+    Plug 'raichoo/haskell-vim'               { 'for': 'haskell' }
+
   " Frameworks
 
     " Ruby On Rails

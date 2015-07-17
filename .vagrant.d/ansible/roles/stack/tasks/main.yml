@@ -1,0 +1,38 @@
+---
+- name: Install python-pycurl
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - "python-pycurl"
+    - "python-apt"
+  tags:
+    - haskell
+    - stack
+
+- name: Add stack repository keys
+  apt_repository:
+    repo: "deb http://download.fpcomplete.com/ubuntu/trusty stable main"
+    validate_certs: yes
+    state: present
+  tags:
+    - haskell
+    - stack
+
+- name: Add stack repository
+  apt_key:
+    url: "https://s3.amazonaws.com/download.fpcomplete.com/ubuntu/fpco.key"
+    validate_certs: yes
+    state: present
+  tags:
+    - haskell
+    - stack
+
+- name: Install stack
+  apt:
+    name: "stack"
+    update_cache: yes
+    state: latest
+  tags:
+    - haskell
+    - stack

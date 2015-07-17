@@ -14,3 +14,11 @@
 #         from: '<path-to-folder-on-host>'
 #         to:   '<path-to-folder-on-guest>'
 ---
+- host: 'testbed'
+  box: 'ubuntu-lts'
+  size: 'large'
+  domains:
+    - 'testbed.dev'
+  groups:
+    - 'testbed'
+

@@ -5,4 +5,17 @@
   roles:
     - workspace
 
+- hosts: testbed
+  sudo: yes
+
+  roles:
+    - 'elixir'
+    - 'erlang'
+    - 'golang'
+    - 'leiningen'
+    - 'ocaml'
+    - 'rust'
+    - 'sbt'
+    - 'stack'
+
 - include: playbook.private.yml

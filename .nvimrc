@@ -83,7 +83,10 @@ call plug#begin('~/.nvim/plugged')
     Plug 'rust-lang/rust.vim',               { 'for': 'rust' }
 
     " Haskell
-    Plug 'raichoo/haskell-vim'               { 'for': 'haskell' }
+    Plug 'raichoo/haskell-vim',              { 'for': 'haskell' }
+
+    " Ocaml
+    Plug 'def-lkb/ocp-indent-vim',           { 'for': 'ocaml' }
 
   " Frameworks
 
@@ -162,3 +165,11 @@ call plug#begin('~/.nvim/plugged')
   Plug 'demiazz/vimrc'
 
 call plug#end()
+
+" Ocaml
+
+let output = system('which opam')
+if !v:shell_error
+  let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+  execute "set rtp+=" . g:opamshare . "/merlin/vim"
+endif

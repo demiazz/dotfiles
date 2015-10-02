@@ -216,6 +216,9 @@ Vagrant.configure(2) do |vagrant|
         provider.cpus               = config.cpus
         provider.memory             = config.memory
         provider.update_guest_tools = true
+
+        provider.customize [ 'set', :id,
+                             '--on-window-close', 'keep-running' ]
       end
     end
   end

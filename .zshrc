@@ -22,4 +22,4 @@ export   PATH=$PATH:$GOPATH/bin
 
 # Aliases
 
-alias tmuxinator="chruby-exec system -- /usr/local/bin/tmuxinator"
+alias mux="chruby-exec system -- /usr/local/bin/mux"

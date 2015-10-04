@@ -1,0 +1,33 @@
+[user]
+	name = Alexey Plutalov
+	email = demiazz.py@gmail.com
+[core]
+	editor = vim
+	autocrlf = input
+	excludesfile = ~/.gitignore
+[color]
+	ui = true
+	diff = auto
+	status = auto
+	branch = auto
+[alias]
+	st = status
+	ci = commit
+	br = branch
+	co = checkout
+	st = status
+	co = checkout
+	pom = push origin master
+	b = branch
+[push]
+	default = simple
+[format]
+	pretty = %C(yellow)%h%Creset %s %C(red)(%an, %cr)%Creset
+[filter "hawser"]
+	clean = git hawser clean %f
+	smudge = git hawser smudge %f
+	required = true
+[filter "lfs"]
+	clean = git lfs clean %f
+	smudge = git lfs smudge %f
+	required = true

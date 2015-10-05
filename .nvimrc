@@ -30,7 +30,7 @@ call plug#begin('~/.nvim/plugged')
     Plug 'vim-scripts/IndexedSearch'
 
     " File open
-    Plug 'kien/ctrlp.vim'
+    Plug 'ctrlpvim/ctrlp.vim'
     Plug 'FelikZ/ctrlp-py-matcher'
 
     " Trailing whitespaces

@@ -23,7 +23,7 @@
 
 ;; Add use-package path to load-path list
 
-(add-to-list 'load-path use-package-directory)
+(add-to-list 'load-path µ/use-package-path)
 
 ;; Try load use-package, and clone them from Git, if it's not exists
 
@@ -37,7 +37,7 @@
 
          (status
           (call-process
-           git nil `(,log t) t "--no-pager" "clone" "-v" url use-package-directory)))
+           git nil `(,log t) t "--no-pager" "clone" "-v" url µ/use-package-path)))
 
     (if (zerop status)
         (message "Package `use-package` successfully installed")

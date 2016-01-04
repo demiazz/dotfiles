@@ -13,6 +13,8 @@
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
+(package-initialize)
+
 ;;------------------------------------------------------------------------------
 ;; use-package
 ;;------------------------------------------------------------------------------
@@ -122,7 +124,7 @@
 	   (layer-name   (symbol-name layer))
 	   (µ-name       (intern
 			  (concat "µ/" layer-name "/" setting-name)))
-	   (value        (car (cdr setting))))
+	   (value        (cdr setting)))
 
       (if (not (boundp µ-name))
 	  (set µ-name value)))))

@@ -115,17 +115,17 @@
 
     (reverse result)))
 
-(defmacro µ/default-settings (layer &rest settings)
+(defun µ/default-settings (layer settings)
   "Set SETTINGS if is not exists."
-  `(dolist (setting (µ/list-to-assoc ',settings))
-     (let* ((setting-name (symbol-name (car setting)))
-            (layer-name   (symbol-name ',layer))
-            (µ-name       (intern
-                           (concat "µ/" layer-name "/" setting-name)))
-            (value        (car (cdr setting))))
+  (dolist (setting settings)
+    (let* ((setting-name (symbol-name (car setting)))
+	   (layer-name   (symbol-name layer))
+	   (µ-name       (intern
+			  (concat "µ/" layer-name "/" setting-name)))
+	   (value        (car (cdr setting))))
 
-       (if (not (boundp µ-name))
-           (set µ-name value)))))
+      (if (not (boundp µ-name))
+	  (set µ-name value)))))
 
 (defmacro µ/settings (layer &rest settings)
   "Set SETTINGS."

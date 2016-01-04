@@ -127,18 +127,18 @@
 	   (value        (cdr setting)))
 
       (if (not (boundp µ-name))
-	  (set µ-name value)))))
+	  (set-default µ-name value)))))
 
-(defmacro µ/settings (layer &rest settings)
+(defun µ/settings (layer settings)
   "Set SETTINGS."
-  `(dolist (setting (µ/list-to-assoc ',settings))
+  (dolist (setting settings)
     (let* ((setting-name (symbol-name (car setting)))
-           (layer-name   (symbol-name ',layer))
-           (µ-name       (intern
-                          (concat "µ/" layer-name "/" setting-name)))
-           (value        (car (cdr setting))))
+	   (layer-name   (symbol-name layer))
+	   (µ-name       (intern
+			  (concat "µ/" layer-name "/" setting-name)))
+	   (value        (cdr setting)))
 
-      (set µ-name value))))
+      (set-default µ-name value))))
 
 ;;------------------------------------------------------------------------------
 ;; Precompile

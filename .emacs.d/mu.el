@@ -103,36 +103,40 @@
 (defun µ/list-to-assoc (source)
   (if (oddp (length source))
       (error "List must have even count of elements for converting to alist."))
-  
+
   (let ((acc    '())
         (result '()))
     (dolist (e source)
       (setq acc (cons e acc))
-      
+
       (when (= (length acc) 2)
         (setq result (cons (reverse acc) result))
         (setq acc    '())))
 
     (reverse result)))
 
-(defmacro µ/default-settings (&rest settings)
+(defmacro µ/default-settings (layer &rest settings)
   "Set SETTINGS if is not exists."
   `(dolist (setting (µ/list-to-assoc ',settings))
-     (let* ((name (car setting))
-            (µ-name (intern (concat "µ/" (symbol-name name))))
-            (value (car (cdr setting))))
+     (let* ((setting-name (symbol-name (car setting)))
+            (layer-name   (symbol-name ',layer))
+            (µ-name       (intern
+                           (concat "µ/" layer-name "/" setting-name)))
+            (value        (car (cdr setting))))
 
        (if (not (boundp µ-name))
            (set µ-name value)))))
 
-(defmacro µ/settings (&rest settings)
+(defmacro µ/settings (layer &rest settings)
   "Set SETTINGS."
   `(dolist (setting (µ/list-to-assoc ',settings))
-     (let* ((name (car setting))
-            (µ-name (intern (concat "µ/" (symbol-name name))))
-            (value (car (cdr setting))))
+    (let* ((setting-name (symbol-name (car setting)))
+           (layer-name   (symbol-name ',layer))
+           (µ-name       (intern
+                          (concat "µ/" layer-name "/" setting-name)))
+           (value        (car (cdr setting))))
 
-       (set µ-name value))))
+      (set µ-name value))))
 
 ;;------------------------------------------------------------------------------
 ;; Precompile

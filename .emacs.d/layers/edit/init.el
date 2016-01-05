@@ -1,18 +1,24 @@
 ;;------------------------------------------------------------------------------
-;; µ Loader
+;; Selection
 ;;------------------------------------------------------------------------------
 
-(load (expand-file-name "mu.el" user-emacs-directory))
+;; Delete selection when start typing
+
+(delete-selection-mode µ/edit/delete-selection)
+
+;; Transient mark like a classic editors
+
+(transient-mark-mode µ/edit/transient-mark)
 
 ;;------------------------------------------------------------------------------
-;; Settings
+;; Clipboard
 ;;------------------------------------------------------------------------------
 
-(µ/settings 'theme '((themes  . (twilight-theme))
-                     (default . twilight)))
+(setq-default x-select-enable-clipboard t)
 
 ;;------------------------------------------------------------------------------
-;; Bootstrap
+;; Indentation
 ;;------------------------------------------------------------------------------
 
-(µ/load-layers '(ui edit backup theme))
+(setq-default tab-width        µ/edit/tab-width
+              indent-tabs-mode µ/edit/tabs)

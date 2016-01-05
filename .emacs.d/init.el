@@ -8,6 +8,8 @@
 ;; Settings
 ;;------------------------------------------------------------------------------
 
+(µ/settings 'backup '((enabled . nil)))
+
 (µ/settings 'theme '((themes  . (twilight-theme))
                      (default . twilight)))
 

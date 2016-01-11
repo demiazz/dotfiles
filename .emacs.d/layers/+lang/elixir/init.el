@@ -5,9 +5,15 @@
     (error "`%s` must be executable file."))
   (set-default variable path))
 
+(use-package elixir-mode
+  :ensure t
+  :pin    "melpa-stable"
+  :demand t)
+
 (use-package alchemist
   :ensure t
   :pin    "melpa-stable"
+  :demand t
   :init
   (µ/elixir/use-executable
    "mix" µ/elixir/mix-command 'alchemist-mix-command)
